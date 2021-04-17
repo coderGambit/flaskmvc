@@ -5,7 +5,7 @@ import datetime
 
 class Courses(db.Model):
     courseID = db.Column(db.Integer, primary_key=True)
-    jobID = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
+    jobID = db.Column(db.Integer, db.ForeignKey('jobs.jobID'), nullable=False)
     courseName = db.Column(db.String(80), nullable=False)
     courseDescription = db.Column(db.String(1000), nullable=False)
     skills = db.Column(db.String(100), nullable=False)

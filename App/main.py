@@ -8,7 +8,9 @@ from App.models import db
 
 from App.views import (
     api_views,
-    user_views
+    user_views,
+    courses_views,
+    jobs_views
 )
 
 def get_db_uri(scheme='sqlite://', user='', password='', host='//demo.db', port='', name=''):
@@ -49,6 +51,8 @@ app.app_context().push()
 
 app.register_blueprint(api_views)
 app.register_blueprint(user_views)
+app.register_blueprint(courses_views)
+app.register_blueprint(jobs_views)
 
 ''' Set up JWT here (if using flask JWT)'''
 # def authenticate(uname, password):

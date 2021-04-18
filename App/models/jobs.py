@@ -7,7 +7,7 @@ class Jobs(db.Model):
     jobName = db.Column(db.String(80), nullable=False)
     jobDescription = db.Column(db.String(1000), nullable=False)
     requirements = db.Column(db.String(1000), nullable=False)
-    course_ID = db.Column(db.Integer, db.ForeignKey('courses.courseID'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.courseID'), nullable=False)
     def toDict(self):
         return {
             "jobID": self.jobID,

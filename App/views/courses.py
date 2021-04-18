@@ -5,3 +5,8 @@ courses_views = Blueprint('courses_views', __name__, template_folder='../templat
 from App.models import Courses
 
 #from App.forms import CourseForm
+
+
+@courses_views.route('/courses')
+def index():
+    return render_template('courses.html')

@@ -5,15 +5,14 @@ from App.controllers import(get_users_json, get_users, create_user)
 from App.forms import LogIn
 
 
-@user_views.route('/users', methods=['GET'])
-def get_user_page():
-    users = get_users
-    return render_template('users.html', users=users)
+#@user_views.route('/users', methods=['GET'])
+#def get_user_page():
+    #users = get_users
+    #return render_template('users.html', users=users)
 
 @user_views.route('/login')
 def index():
-    newuser = create_user('bob', 'bob@mail.com','bobpass')
-    return render_template('login.html', newuser=newuser)
+    return render_template('login.html')
 
 @user_views.route('/login', methods=['POST'])
 def loginAction():

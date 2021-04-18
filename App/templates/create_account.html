@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="../static/style.css">
+	  <title>Title</title>
+	</head>
+
+	<body>
+
+		<div class="main_container">
+
+			<div class="about_section">
+				<img class="about_section_photo" src="https://picsum.photos/600" alt="cover photo">
+			</div>
+
+		<form action="/signUp" method="POST">
+
+			<img src="https://picsum.photos/100" alt="logo">
+			<p>Create an account</p>
+			<div class="fnln_flex_container">
+				<label for="f_name"></label><input type="text" id="f_name" name="firstName" placeholder="First Name">
+				<label for="l_name"></label><input type="text" id="l_name" name="lastName" placeholder="Last Name">
+			</div>
+			<label for="email"></label><input type="email" id="email" name="emailAddress" placeholder="Email Address">
+			<label for="password"></label><input type="password" id="password" name="password" placeholder="Password">
+			<label for="sign_up"></label><input type="button" id="sign_up" name="signUp" value="Sign Up">
+			<label for="sign_in"></label><input type="button" id="sign_in" name="signIn" value="Already have an account? Sign In">
+
+		</form>
+
+		</div>
+
+	</body>
+</html>

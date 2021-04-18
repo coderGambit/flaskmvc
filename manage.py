@@ -25,12 +25,9 @@ def serve():
 
 @manager.command
 def make_users():
-    bob = User(first_name="Bob", last_name="Smith")
-    sally = User(first_name="Sally", last_name="Smith")
-    rob = User(first_name="Rob", last_name="Smith")
-    db.session.add(bob)
-    db.session.add(sally)
-    db.session.add(rob)
+    newuser = User(username="bob", email="bob@mail.com") # create user object
+    newuser.set_password("bobpass") # set password
+    db.session.add(newuser) # save user
     db.session.commit()
     print("users created")
 

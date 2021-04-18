@@ -9,6 +9,26 @@ def get_user_page():
     users = User.query.all()
     return render_template('users.html', users=users)
 
+@user_views.route('/login')
+def index():
+  return render_template('login.html')
+
+@user_views.route('/login', methods=['POST'])
+def loginAction():
+    form = LogIn()
+    if form.validate_on_submit(): 
+        data = request.form
+        user = User.query.filter_by(username = data['username']).first()
+    if user and user.check_password(data['password']): 
+        flash('Logged in successfully.') 
+        login_user(user) 
+        return redirect(url_for('todos')) 
+    flash('Invalid credentials')
+    return redirect(url_for('index'))
+
+
+
+
 @user_views.route('/api/users')
 def client_app():
     users = User.query.all()

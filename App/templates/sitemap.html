@@ -5,5 +5,13 @@
 {{ super() }}
 
 {% block content %}
-<p>Site Map</p>
+<h1>Site Map</h1>
+<div class="nav-wrapper">
+<ul id="nav-mobile" class="left">
+                <li><a href="/">Home</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/selectcourse">Select Course</a></li>
+            </ul>
+</div>
 {% endblock %}

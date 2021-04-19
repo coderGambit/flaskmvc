@@ -6,4 +6,31 @@
 
 {% block content %}
 <p>Job</p>
+
+ <div class="row">
+      <div class="row">
+        <form id="myForm" class="col s12 m8 offset-m2" method="POST" action="/signup">
+            {{ form.csrf_token }}
+
+            <div class="input-field col s12 m8 offset-m2"> 
+              {{ form.jobname(size=20, class="validate") }}
+              {{ form.jobname.label }}
+            </div>
+
+            <div class="input-field col s12 m8 offset-m2">
+              {{ form.jobdescription(size=50, class="validate") }}
+              {{ form.jobdescription.label }}
+            </div>
+
+            <div class="input-field col s12 m8 offset-m2">
+              {{ form.requirements(size=20, class="validate") }}
+              {{ form.requirements.label }}
+            </div>
+
+            <div class="input-field col s12 m8 offset-m2">
+              {{form.submit}}
+            </div> 
+        </form>
+      </div>
+  </div>
 {% endblock %}

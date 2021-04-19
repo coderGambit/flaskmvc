@@ -12,7 +12,7 @@ class JobForm(FlaskForm):
     jobname = StringField('Job Name')
     jobdescription = StringField('Job Description')
     requirements = StringField('Requirments')
-    submit = SubmitField('SubmitJob', render_kw={'class': 'btn waves-effect waves-light white-text'})
+    submit = SubmitField('Submit Job', render_kw={'class': 'btn waves-effect waves-light white-text'})
 
 #class CourseForm(FlaskForm):
     #coursename = StringField('Course Name')

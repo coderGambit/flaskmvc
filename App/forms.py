@@ -6,15 +6,13 @@ from wtforms.fields.html5 import EmailField
 class LogIn(FlaskForm):
     username = StringField('username', validators=[InputRequired()])
     password = PasswordField('New Password', validators=[InputRequired()])
-    submit = SubmitField('Login')
-
+    submit = SubmitField('Login', render_kw={'class': 'btn waves-effect waves-light white-text'})
 
 class JobForm(FlaskForm):
     jobname = StringField('Job Name')
     jobdescription = StringField('Job Description')
     requirements = StringField('Requirments')
-    submit = SubmitField('SubmitJob')
-
+    submit = SubmitField('SubmitJob', render_kw={'class': 'btn waves-effect waves-light white-text'})
 
 #class CourseForm(FlaskForm):
     #coursename = StringField('Course Name')

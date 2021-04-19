@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, jsonify, send_f
 from flask_login import current_user, login_required
 user_views = Blueprint('user_views', __name__, template_folder='../templates')
 from App.models import User
-#from App.controllers import(get_users_json, get_users, create_user)
+from App.controllers import(get_users_json, get_users, create_user)
 
 #@user_views.route('/users', methods=['GET'])
 #def get_user_page():

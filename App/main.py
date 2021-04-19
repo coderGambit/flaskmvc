@@ -3,14 +3,15 @@ from flask import Flask
 from flask_jwt import JWT
 from datetime import timedelta 
 from flask_uploads import UploadSet, configure_uploads, IMAGES, TEXT, DOCUMENTS
-
+from flask_login import LoginManager
 from App.models import db
 
 from App.views import (
-    api_views,
+    index_views,
     user_views,
     courses_views,
-    jobs_views
+    jobs_views,
+    auth_views
 )
 
 def get_db_uri(scheme='sqlite://', user='', password='', host='//demo.db', port='', name=''):
@@ -49,10 +50,27 @@ app = create_app()
 
 app.app_context().push()
 
-app.register_blueprint(api_views)
+app.register_blueprint(index_views)
 app.register_blueprint(user_views)
 app.register_blueprint(courses_views)
 app.register_blueprint(jobs_views)
+app.register_blueprint(auth_views)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+from App.models import User
+
+#Begin Flask Login Function
+
+@login_manager.user_loader  
+def load_user(user_id):
+    """Check if user is logged-in on every page load."""
+    if user_id is not None:
+        return User.query.get(int(user_id))
+    return None
+    
+#End Flask Login Function
 
 ''' Set up JWT here (if using flask JWT)'''
 # def authenticate(uname, password):

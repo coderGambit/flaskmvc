@@ -26,20 +26,19 @@ def courseAction():
         db.session.add(newcourse) # save new course
         db.session.commit()
         flash('Job Created!')# send message
-        return redirect(url_for('dashboard'))# redirect to the dashboard page
+        return redirect(url_for('courses_views.courses'))# redirect to the dashboard page
         flash('Error invalid input!')
-        return redirect(url_for('dashboard')) 
+        return redirect(url_for('courses_views.courses')) 
 
 #<-------------------Delete Course----------------------->
 
-@courses_views.route('/deleteCourse/<id>', methods=['GET'])
-@login_required
-def delete_course(id):
-    course = Course.query.filter_by(userid=current_user.id, id=id).first() # query course
+@courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
+def delete_course(courseID):
+    course = Course.query.filter_by(id=current_user.id, courseID=courseID).first() # query course
     if course:
         db.session.delete(course)
         db.session.commit()
         flash('Course Deleted!')
-        return redirect(url_for('courses'))
+        return redirect(url_for('courses_views.courses'))
     flash('Unauthorized or course not found')
-    return redirect(url_for('courses'))
+    return redirect(url_for('courses_views.courses'))

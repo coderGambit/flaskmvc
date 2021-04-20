@@ -18,27 +18,29 @@
               {{ form.coursedescription(size=500, class="validate") }}
               {{ form.coursedescription.label }}
             </div>
-
             <div class="input-field col s12 m8 offset-m2">
               {{ form.skills(size=200, class="validate") }}
               {{ form.skills.label }}
             </div>
-            <p>For loop jobs here </p>
-
-            <input type="checkbox" id="jobIDhere" name="jobscheckbox" value="JobNamehere">
-            <label for="jobIDhere">Job Name Here</label><br>
-
+           {% for job in jobs %}
+                <tr>
+                <td><input type="checkbox" id="{{job.jobID}}" name="jobscheckbox" value="{{job.jobName}}">
+                <label for="{{job.jobID}}">Job Name Here</label></td>
+         {% endfor %}
             <div class="input-field col s12 m8 offset-m2">
               {{form.submit}}
             </div> 
         </form>
       </div>
   </div>
-
-
-
-
-
-
-
+<table>
+      {% for course in courses %}
+                <tr>
+                <td>{{course.courseName}}</td>
+                <td>{{course.courseDescription}}</td>
+                <td>{{course.sills}}</td>
+                 <td><a class="waves-effect waves-light btn" href="/deleteCourse/{{course.courseID}}">DELETE</a></td>
+                </tr>
+         {% endfor %}
+  </table>
 {% endblock %}

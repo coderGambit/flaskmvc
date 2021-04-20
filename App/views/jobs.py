@@ -8,12 +8,14 @@ from App.forms import JobForm
 
 #<-------------Job Form----------------------->
 @jobs_views.route('/jobs', methods=['GET'])
+@login_required
 def jobs():
     form = JobForm()
     jobs = Jobs.query.all()
     return render_template('jobs.html', form=form, jobs=jobs)
 
 @jobs_views.route('/jobs', methods=['POST'])
+@login_required
 def jobAction():
   form = JobForm() # create form object
   if form.validate_on_submit():
@@ -29,11 +31,13 @@ def jobAction():
 #<---------------Edit Job Still Editing----------------------->
 
 @jobs_views.route('/editJob/<jobID>', methods=['GET'])
+@login_required
 def edit_job(jobID): # get the job id from url
     form = JobForm()
     return render_template('edit.html', jobID=jobID, form=form)# pass the form and todo id to the template
 
 @jobs_views.route('/editJob/<jobID>', methods=['POST'])
+@login_required
 def edit_job_action(jobID):
   form = JobForm()
   if form.validate_on_submit():

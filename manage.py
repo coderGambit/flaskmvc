@@ -1,5 +1,6 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+from flask import json
 from App.main import app
 from App.models import db
 from App.models import User
@@ -27,8 +28,9 @@ def make_users():
     bob.set_password("bobpass") # use method to hash password
     users = [bob.toDict()]
     json.dumps(users)
+    db.session.add(bob)
+    db.session.commit()
     print("users created")
-
-
+    
 if __name__ == "__main__":
     manager.run()

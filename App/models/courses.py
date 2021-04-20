@@ -4,12 +4,11 @@ import datetime
 
 class Courses(db.Model):
     courseID = db.Column(db.Integer, primary_key=True)
-    #job_id = db.Column('job_id', db.Integer, db.ForeignKey('jobs.jobID'))
+    job_id = db.Column('job_id', db.Integer, db.ForeignKey('jobs.jobID'))
     courseName = db.Column(db.String(80), nullable=True)
     courseDescription = db.Column(db.String(1000), nullable=True)
     skills = db.Column(db.String(100), nullable=True)
-    #jobs = db.relationship ("Jobs")
-
+    jobs = db.relationship('Jobs')
     def toDict(self):
         return {
             'courseID': self.courseID,

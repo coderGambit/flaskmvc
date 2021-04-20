@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, request
-
+from App.controllers import(get_courses_json, get_courses)
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 
 @index_views.route('/', methods=['GET'])
@@ -12,7 +12,8 @@ def about():
 
 @index_views.route('/selectcourse')
 def selectcourse():
-    return render_template('selectcourse.html')
+    courses = get_courses_json
+    return render_template('selectcourse.html', courses=courses)
 
 @index_views.route('/sitemap')
 def sitemap():

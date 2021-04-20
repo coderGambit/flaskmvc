@@ -5,5 +5,40 @@
 {{ super() }}
 
 {% block content %}
-<p>Course Page</p>
+<div class="row">
+      <div class="row">
+        <form id="CourseForm" class="col s12 m8 offset-m2" method="POST" action="/courses">
+            {{ form.csrf_token }}
+            <div class="input-field col s12 m8 offset-m2"> 
+              {{ form.coursename(size=100, class="validate") }}
+              {{ form.coursename.label }}
+            </div>
+
+            <div class="input-field col s12 m8 offset-m2">
+              {{ form.coursedescription(size=500, class="validate") }}
+              {{ form.coursedescription.label }}
+            </div>
+
+            <div class="input-field col s12 m8 offset-m2">
+              {{ form.skills(size=200, class="validate") }}
+              {{ form.skills.label }}
+            </div>
+            <p>For loop jobs here </p>
+
+            <input type="checkbox" id="jobIDhere" name="jobscheckbox" value="JobNamehere">
+            <label for="jobIDhere">Job Name Here</label><br>
+
+            <div class="input-field col s12 m8 offset-m2">
+              {{form.submit}}
+            </div> 
+        </form>
+      </div>
+  </div>
+
+
+
+
+
+
+
 {% endblock %}

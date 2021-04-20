@@ -6,12 +6,15 @@ from App.models import Jobs
 from App.forms import JobForm
 
 @jobs_views.route('/jobs', methods=['GET'])
+@login_required
 def jobs():
     form = JobForm()
-    return render_template('jobs.html', form=form)
+    jobs = get_jobs
+    return render_template('jobs.html', form=form, jobs=jobs)
 
 
 @jobs_views.route('/jobs', methods=['POST'])
+@login_required
 def jobAction():
   form = JobForm() # create form object
   if form.validate_on_submit():

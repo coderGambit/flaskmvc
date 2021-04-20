@@ -1,17 +1,19 @@
-from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory
+from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for
 from flask_login import current_user, login_required
 from wtforms import Form, SelectMultipleField
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs)
-from App.models import Courses
-from App.models import Jobs
+from App.models import Courses, Jobs
 from App.forms import CourseForm
+
+
+#<----------------Course Form------------------------>
 
 @courses_views.route('/courses', methods=['GET'])
 def courses():
     form = CourseForm()
-    courses = get_courses
-    jobs = get_jobs
+    courses = Courses.query.all()
+    jobs = Jobs.query.all()
     return render_template('courses.html', form=form, courses=courses, jobs=jobs)
 
 @courses_views.route("/courses", methods=["GET", "POST"])
@@ -28,7 +30,8 @@ def courseAction():
         flash('Error invalid input!')
         return redirect(url_for('dashboard')) 
 
-#Delete Course
+#<-------------------Delete Course----------------------->
+
 @courses_views.route('/deleteCourse/<id>', methods=['GET'])
 @login_required
 def delete_course(id):

@@ -1,47 +1,30 @@
 {% extends "layout.html" %}
-{% block title %}Jobs{% endblock %}
-{% block page %}Jobs{% endblock %}
+{% block title %}Edit Job{% endblock %}
+{% block page %}Edit Job{% endblock %}
 
 {{ super() }}
 
 {% block content %}
-<p>Job</p>
-
  <div class="row">
       <div class="row">
-        <form id="JobForm" class="col s12 m8 offset-m2" method="POST" action="/jobs">
+        <form id="JobForm" class="col s12 m8 offset-m2" method="POST" action="\editJob\{{id}}">
             {{ form.csrf_token }}
-
             <div class="input-field col s12 m8 offset-m2"> 
               {{ form.jobname(size=200, class="validate") }}
               {{ form.jobname.label }}
             </div>
-
             <div class="input-field col s12 m8 offset-m2">
               {{ form.jobdescription(size=500, class="validate") }}
               {{ form.jobdescription.label }}
             </div>
-
             <div class="input-field col s12 m8 offset-m2">
               {{ form.requirements(size=200, class="validate") }}
               {{ form.requirements.label }}
             </div>
-
             <div class="input-field col s12 m8 offset-m2">
               {{form.submit}}
             </div> 
         </form>
       </div>
   </div>
-  <h3>Jobs Created</h3>
-  <table>
-      {% for job in jobs %}
-                <tr>
-                <td>{{job.jobName}}</td>
-                <td>{{job.jobDescription}}</td>
-                <td>{{job.requirements}}</td>
-                 <td><a class="waves-effect waves-light btn" href="/editJob/{{job.jobID}}">EDIT</a></td>
-                </tr>
-         {% endfor %}
-  </table>
 {% endblock %}

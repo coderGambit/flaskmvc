@@ -1,3 +1,3 @@
-from .user import *
-from .courses import *
 from .jobs import *
+from .courses import *
+from .user import *

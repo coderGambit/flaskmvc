@@ -20,13 +20,13 @@ def loginAction():
       if user and user.check_password(data['password']): # check credentials
         flash('Logged in successfully.') # send message to next page
         login_user(user) # login the user
-        return redirect(url_for('login')) # redirect to main page if login successful
+        return redirect(url_for('user_views.dashboard')) # redirect to main page if login successful
   flash('Invalid credentials')
-  return redirect(url_for('dashboard'))
+  return redirect(url_for('auth_views.index'))
 
 @auth_views.route('/logout', methods=['GET'])
 @login_required
 def logout():
   logout_user()
   flash('Logged Out!')
-  return redirect(url_for('index'))
+  return redirect(url_for('auth_views.index'))

@@ -13,8 +13,8 @@ def about():
 
 @index_views.route('/selectcourse')
 def selectcourse():
-    courses = Courses.query.all()
-    return render_template('selectcourse.html', courses=courses)
+    #courses = Courses.query.all()
+    return render_template('selectcourse.html')#courses=courses)
 
 @index_views.route('/sitemap')
 def sitemap():

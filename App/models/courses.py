@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 import datetime
 
-class Courses (db.Model):
+class Courses(db.Model):
     courseID = db.Column(db.Integer, primary_key=True)
     courseName = db.Column(db.String(80), nullable=True)
     courseDescription = db.Column(db.String(1000), nullable=True)

@@ -41,7 +41,8 @@ def edit_job(jobID): # get the job id from url
 def edit_job_action(jobID):
   form = JobForm()
   if form.validate_on_submit():
-    job = Job.query.filter_by(id=current_user.id, jobID=jobID).first() # query  todo
+    job = Jobs.query.filter_by(jobID=jobID).first() # query  todo
+    data = request.form
     job.jobName = data['jobname'] 
     job.jobDescription = data['jobdescription']
     job.requirements = data['requirements']

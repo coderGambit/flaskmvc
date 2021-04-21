@@ -7,7 +7,7 @@
 {% block content %}
  <div class="row">
       <div class="row">
-        <form id="JobForm" class="col s12 m8 offset-m2" method="POST" action="\editJob\{{id}}">
+        <form id="JobForm" class="col s12 m8 offset-m2" method="POST" action="\editJob\{{jobID}}">
             {{ form.csrf_token }}
             <div class="input-field col s12 m8 offset-m2"> 
               {{ form.jobname(size=200, class="validate") }}

@@ -14,7 +14,6 @@ class JobForm(FlaskForm):
     requirements = TextField('Requirments', validators=[InputRequired()])
     submit = SubmitField('Submit Job', render_kw={'class': 'btn waves-effect waves-light white-text'})
 
-
 class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()

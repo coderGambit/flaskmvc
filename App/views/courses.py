@@ -3,12 +3,13 @@ from flask_login import current_user, login_required
 from wtforms import Form, SelectMultipleField
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs)
-from App.models import Courses, Jobs
+from App.models import Courses, Jobs, db
 from App.forms import CourseForm
 
 
 #<----------------Course Form------------------------>
 @courses_views.route('/courses', methods=['GET'])
+@login_required
 def courses():
     form = CourseForm()
     courses = Courses.query.all()
@@ -16,15 +17,16 @@ def courses():
     return render_template('courses.html', form=form, courses=courses, jobs=jobs)
 
 @courses_views.route("/courses", methods=["GET", "POST"])
+@login_required
 def courseAction():
      form = CourseForm() # create form object
      if form.validate_on_submit():
         data = request.form # get data from form submission
-        choices = request.form.getlist('jobscheckbox') #This is the name of the checkboxes
-        newcourse = Courses(courseName=data['courseName'], courseDescription=data['courseDescription'], skills=data['skills'], jobs=choices) # create course object 
+        choices = request.form.getlist('jobchoices') #This is the name of the checkboxes
+        newcourse = Courses(courseName=data['coursename'], courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
         db.session.add(newcourse) # save new course
         db.session.commit()
-        flash('Job Created!')# send message
+        flash('Course Created!')# send message
         return redirect(url_for('courses_views.courses'))# redirect to the dashboard page
         flash('Error invalid input!')
         return redirect(url_for('courses_views.courses')) 
@@ -32,8 +34,9 @@ def courseAction():
 #<-------------------Delete Course----------------------->
 
 @courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
+@login_required
 def delete_course(courseID):
-    course = Course.query.filter_by(id=current_user.id, courseID=courseID).first() # query course
+    course = Courses.query.filter_by(courseID=courseID).first() # query course (Once models fix add user ID)
     if course:
         db.session.delete(course)
         db.session.commit()
@@ -41,3 +44,9 @@ def delete_course(courseID):
         return redirect(url_for('courses_views.courses'))
     flash('Unauthorized or course not found')
     return redirect(url_for('courses_views.courses'))
+
+
+@courses_views.route('/selectCourse/<courseID>', methods=['GET'])
+def course_jobs(courseID):
+    courses = Courses.query.filter_by(courseID=courseID).first() # query course (Once models fix add user ID)
+    return render_template('courseJobs.html', course=course)

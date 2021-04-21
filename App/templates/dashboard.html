@@ -17,13 +17,21 @@
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
                 <li><a href="/dashboard">Dash Board</a></li>
-                <li><a href="/logout">Logout</a></li>
                 <li><a href="/courses">Courses</a></li>
                 <li><a href="/jobs">Jobs</a></li>
             </ul>
+             <nav class="teal">
+        {% if current_user.is_authenticated %}
+          <ul class="right" style="margin-top: 10px">
+            <li><a class="waves-effect waves-light btn right" href="/logout">Logout</a></li>
+          </ul>
+        {% endif %}
+      </div>
+    </nav>
         </div>
       </div>
     </nav>
+   
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <nav class="white black-text" style="padding: 10px">
@@ -38,7 +46,7 @@
     {% endif %}
     {% endwith %}
 
-    <div class="container" id="content">{% block content %}{% endblock %}</div>
+    <div class="container" id="content">{% block content %} {% endblock %}</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>

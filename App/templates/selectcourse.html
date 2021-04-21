@@ -1,9 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Select Course{% endblock %}
 {% block page %}Select Course{% endblock %}
-
 {{ super() }}
-
 {% block content %}
-<p>Select Course</p>
+<table>
+    <tr>
+        <td>Course Name</td>
+        <td>Course Description</td>
+        <td>Course Skills</td>
+    </tr>
+      {% for course in courses %}
+                <tr>
+                <td>{{course.courseName}}</td>
+                <td>{{course.courseDescription}}</td>
+                <td>{{course.skills}}</td>
+                 <td><a class="waves-effect waves-light btn" href="/selectCourse/{{course.courseID}}">SELECT FOR JOB</td>
+                </tr>
+         {% endfor %}
+  </table>
 {% endblock %}

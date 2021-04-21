@@ -24,8 +24,8 @@
             </div>
            {% for job in jobs %}
                 <tr>
-                <td><input type="checkbox" id="{{job.jobID}}" name="jobscheckbox" value="{{job.jobName}}">
-                <label for="{{job.jobID}}">Job Name Here</label></td>
+                <td><input type="checkbox" id="{{job.jobID}}" name="jobchoices" value="{{job.jobName}}">
+                <label for="{{job.jobID}}">{{job.jobName}}</label></td>
          {% endfor %}
             <div class="input-field col s12 m8 offset-m2">
               {{form.submit}}
@@ -38,7 +38,7 @@
                 <tr>
                 <td>{{course.courseName}}</td>
                 <td>{{course.courseDescription}}</td>
-                <td>{{course.sills}}</td>
+                <td>{{course.skills}}</td>
                  <td><a class="waves-effect waves-light btn" href="/deleteCourse/{{course.courseID}}">DELETE</a></td>
                 </tr>
          {% endfor %}

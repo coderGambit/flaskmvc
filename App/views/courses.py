@@ -8,7 +8,6 @@ from App.forms import CourseForm
 
 
 #<----------------Course Form------------------------>
-
 @courses_views.route('/courses', methods=['GET'])
 def courses():
     form = CourseForm()

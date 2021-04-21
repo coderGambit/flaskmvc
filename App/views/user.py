@@ -4,12 +4,10 @@ user_views = Blueprint('user_views', __name__, template_folder='../templates')
 from App.models import User
 from App.controllers import(get_users_json, get_users, create_user)
 
-
 @user_views.route('/users', methods=['GET'])
 def profile_page():
     users = get_users
     return render_template('users.html', users=users)
-
 
 @user_views.route('/dashboard')
 @login_required

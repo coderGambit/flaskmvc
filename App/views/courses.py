@@ -49,4 +49,4 @@ def delete_course(courseID):
 @courses_views.route('/selectCourse/<courseID>', methods=['GET'])
 def course_jobs(courseID):
     courses = Courses.query.filter_by(courseID=courseID).first() # query course (Once models fix add user ID)
-    return render_template('courseJobs.html', course=course)
+    return render_template('courseJobs.html', courses=courses)

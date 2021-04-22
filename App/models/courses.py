@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 import datetime
+from .user import *
+from .jobs import *
 
 class Courses (db.Model):
     courseID = db.Column(db.Integer, primary_key=True)

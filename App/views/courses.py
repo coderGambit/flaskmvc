@@ -23,7 +23,7 @@ def courseAction():
      if form.validate_on_submit():
         data = request.form # get data from form submission
         choices = request.form.getlist('jobchoices') #This is the name of the checkboxes
-        newcourse = Courses(courseName=data['coursename'], courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
+        newcourse = Courses(courseName=data['coursename'], id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
         db.session.add(newcourse) # save new course
         db.session.commit()
         flash('Course Created!')# send message
@@ -36,7 +36,7 @@ def courseAction():
 @courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
 @login_required
 def delete_course(courseID):
-    course = Courses.query.filter_by(courseID=courseID).first() # query course (Once models fix add user ID)
+    course = Courses.query.filter_by(courseID=courseID).first() # query course
     if course:
         db.session.delete(course)
         db.session.commit()

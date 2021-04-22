@@ -20,7 +20,7 @@ def jobAction():
   form = JobForm() # create form object
   if form.validate_on_submit():
     data = request.form # get data from form submission
-    newjob = Jobs(jobName=data['jobname'], jobDescription=data['jobdescription'], requirements=data['requirements']) # create job object
+    newjob = Jobs(jobName=data['jobname'], id = current_user.id, jobDescription=data['jobdescription'], requirements=data['requirements']) # create job object
     db.session.add(newjob) # save new job
     db.session.commit()
     flash('Job Created!')# send message
@@ -34,14 +34,14 @@ def jobAction():
 @login_required
 def edit_job(jobID): # get the job id from url
     form = JobForm()
-    return render_template('edit.html', jobID=jobID, form=form)# pass the form and todo id to the template
+    return render_template('edit.html', jobID=jobID, form=form) # pass the form and job id to the template
 
 @jobs_views.route('/editJob/<jobID>', methods=['POST'])
 @login_required
 def edit_job_action(jobID):
   form = JobForm()
   if form.validate_on_submit():
-    job = Jobs.query.filter_by(jobID=jobID).first() # query  todo
+    job = Jobs.query.filter_by(id=current_user.id, jobID=jobID).first()
     data = request.form
     job.jobName = data['jobname'] 
     job.jobDescription = data['jobdescription']

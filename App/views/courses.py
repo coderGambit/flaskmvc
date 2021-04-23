@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for
+from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for, jsonify, json
 from flask_login import current_user, login_required
 from wtforms import Form, SelectMultipleField
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
@@ -15,7 +15,13 @@ def courses():
     form = CourseForm()
     courses = Courses.query.all()
     form.jobchoices.choices = [(job.jobID, job.jobName) for job in jobs ]
-    return render_template('courses.html', form=form, courses=courses, jobs=jobs)
+    courseskills = [course.skills for course in courses]
+    skills = []
+    for skill in courseskills: 
+        skill = skill.replace('.', '')
+        skill = skill.replace(',', '')
+        skills.append(skill)
+    return render_template('courses.html', form=form, courses=courses, jobs=jobs, skills=skills)
 
 @courses_views.route("/courses", methods=["GET", "POST"])
 @login_required
@@ -30,10 +36,11 @@ def courseAction():
         for choice in c_records:
             if choice.jobID in form.jobchoices.data:
                 accepted.append(choice)
-        newcourse.toDict()
+        newcourse.jobs = accepted
+        db.session.add(newcourse)
         db.session.commit()
         flash('Course Created!')# send message
-        return redirect(url_for('courses_views.courses'))# redirect to the dashboard page
+        return redirect(url_for('courses_views.courses'))# redirect to the dashboard page  
         flash('Error invalid input!')
         return redirect(url_for('courses_views.courses')) 
 

@@ -3,17 +3,18 @@ from flask_login import current_user, login_required
 from wtforms import Form, SelectMultipleField
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs)
-from App.models import Courses, Jobs, db
+from App.models import Courses, Jobs, db, User
 from App.forms import CourseForm
 
-
 #<----------------Course Form------------------------>
+
 @courses_views.route('/courses', methods=['GET'])
 @login_required
 def courses():
     form = CourseForm()
     courses = Courses.query.all()
     jobs = Jobs.query.all()
+    form.jobchoices.choices = [(c.jobID, c.jobName) for c in jobs ]
     return render_template('courses.html', form=form, courses=courses, jobs=jobs)
 
 @courses_views.route("/courses", methods=["GET", "POST"])
@@ -22,9 +23,14 @@ def courseAction():
      form = CourseForm() # create form object
      if form.validate_on_submit():
         data = request.form # get data from form submission
-        choices = request.form.getlist('jobchoices') #This is the name of the checkboxes
-        newcourse = Courses(courseName=data['coursename'], id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
+        newcourse = Courses(courseName=data['coursename'],id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
         db.session.add(newcourse) # save new course
+        accepted = []
+        c_records = Jobs.query.all()
+        for choice in c_records:
+            if choice.jobID in form.jobchoices.data:
+                accepted.append(choice)
+        #newcourse.jobs = accepted
         db.session.commit()
         flash('Course Created!')# send message
         return redirect(url_for('courses_views.courses'))# redirect to the dashboard page
@@ -36,7 +42,7 @@ def courseAction():
 @courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
 @login_required
 def delete_course(courseID):
-    course = Courses.query.filter_by(courseID=courseID).first() # query course
+    course = Courses.query.filter_by(id=current_user.id, courseID=courseID).first() # query course
     if course:
         db.session.delete(course)
         db.session.commit()
@@ -45,6 +51,7 @@ def delete_course(courseID):
     flash('Unauthorized or course not found')
     return redirect(url_for('courses_views.courses'))
 
+#<----------------------Select Course Route-------------------------------->
 
 @courses_views.route('/selectCourse/<courseID>', methods=['GET'])
 def course_jobs(courseID):

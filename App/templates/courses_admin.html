@@ -1,0 +1,375 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        body {
+            background-color: #A8C6FA;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        main {
+            display: flex;
+            align-items: center;
+            max-width: max-content;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            gap: 3rem;
+        }
+
+        .course_dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 290px);
+            max-width: 1450px;
+            margin: 0 auto;
+            gap: 3rem;
+            justify-items: center;
+            justify-content: center;
+            align-items: stretch;
+            align-content: center;
+        }
+
+        .course_card {
+            width: 250px;
+            min-height: 125px;
+            background-color: #3D8AF7;
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 20px;
+            gap: 20px;
+            box-shadow: 0 0 10px #333333;
+        }
+
+        .course_description {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .course_name {
+            text-align: center;
+            grid-column: 1 / -1;
+            font-weight: 700;
+            color: var(--text-color);
+            text-transform: uppercase;
+            overflow: hidden;
+        }
+
+        .course_title {
+            grid-column: 1 / -1;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .skill_list{
+            max-width: max-content;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            grid-column: 1 / -1;
+        }
+
+        .skill_container:nth-child(6n + 1){
+            background-color: #f7aa3d;
+            color: black;
+        }
+
+        .skill_container:nth-child(6n + 2){
+            background-color: #3de7f7;
+            color: black;
+        }
+
+        .skill_container:nth-child(6n + 3){
+            background-color: #f73d8a;
+            color: white;
+        }
+
+        .skill_container:nth-child(6n + 4){
+            background-color: #3df7aa;
+            color: black;
+        }
+
+        .skill_container:nth-child(6n + 5){
+            background-color: #f74d3d;
+            color: white;
+        }
+
+        .skill_container:nth-child(6n + 6){
+            background-color: #8af73d;
+            color: black;
+        }
+
+        .skill_container{
+            max-width: max-content;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.6rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .edit_link {
+            align-self: center;
+            justify-self: center;
+            color: var(--headings-color);
+        }
+
+        .delete_link {
+            align-self: center;
+            justify-self: center;
+        }
+
+        .add_course_button_container{
+            display: flex;
+            align-items: center;
+        }
+
+        .add_course_button {
+            background-color: darkgray;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px #333333;
+            width: 4rem;
+            height: 4rem;
+            font-size: 4rem;
+            color: white;
+            padding: 0;
+            line-height: 22px;
+            transition-duration: 0.05s;
+        }
+
+        .add_course_button:hover {
+            transition-duration: 0.5s;
+            transform: rotate(360deg);
+        }
+
+        .add_course_button:active {
+            background-color: white;
+            color: darkgray;
+        }
+
+        form {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            gap: 1em;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(168, 98, 250, 0.85);
+            color: white;
+        }
+
+        .jobs-check-list {
+            display: flex;
+            max-width: max-content;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .menu_items {
+            list-style-type: none;
+            max-width: max-content;
+            max-height: 150px;
+            overflow: scroll;
+            padding: 0;
+        }
+
+        .anchor {
+            width: 100%;
+            text-align: center;
+            font-weight: bolder;
+            font-size: 1.2rem;
+            padding: 10px 0;
+            cursor: pointer;
+            border: none;
+        }
+
+        .submit_course_button {
+            border: none;
+            padding: 1em 2em;
+            background-color: darkgray;
+            color: white;
+            transition-duration: 0.05s;
+            box-shadow: 0 0 10px #333;
+        }
+
+        .submit_course_button:active {
+            background-color: white;
+            color: darkgray;
+        }
+
+        .submit_course_button:hover {
+            box-shadow: 0 0 10px #fff;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Courses</h1>
+
+<section class="course_dashboard">
+
+    {% for course in courses %}
+
+        <article class="course_card">
+
+            <span class="course_name">{{course.courseName}}</span>
+            <span class="course_title">{{course.courseDescription}}</span>
+
+            <section class="skill_list">
+            {% for skill in course.skills %}
+
+                <article class="skill_container">
+
+                    <strong>{{skill}}</strong>
+
+                </article>
+
+            {% endfor %}
+            </section>
+
+            <a href="#" class="edit_link" onclick="editCourse()">Edit</a>
+            <a href="#" onclick="deleteCourse()" class="delete_link">Delete</a>
+
+        </article>
+
+    {% endfor %}
+
+    <div class="add_course_button_container">
+        <input id="add_course_button" class="add_course_button" type="button" value="+" onclick="addCourse()">
+    </div>
+
+</section>
+
+<form id="add_course_form" action="/insertCourse" method="POST">
+    <h1>Add Course</h1>
+
+    <label for="course_code">Course Name</label>
+    <input type="text" id="course_code" name="coursename" placeholder="Course Name">
+
+    <label for="course_name">Course Description</label>
+    <input type="text" id="course_name" name="coursedescription" placeholder="Course Description">
+
+    <label for="course_skills">Course Skills</label>
+    <input type="text" id="course_skills" name="skills" placeholder="Course Skills">
+
+    <div id="jobs-check-list" class="jobs-check-list">
+
+        <h3 class="anchor">Select Jobs</h3>
+
+        <ul id="menu_items" class="menu_items" name="jobs">
+            {% for job in jobs %}
+                <li><input id="{{job.jobID}}" type="checkbox"/>{{job.jobName}}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <input type="button" class="submit_course_button" id="submit_course_button" name="submitCourse" value="SUBMIT" onclick="submitForm()">
+
+</form>
+
+<script>
+
+    function editCourse() {
+
+    }
+
+    function deleteCourse() {
+
+    }
+
+    // displays the form to add a new course
+    function addCourse() {
+        let element = document.getElementById("add_course_form");
+        element.style.display = "flex";
+    }
+
+
+    // the following set of functions deals with submitting the form to add a new course
+    function resetCheckboxes() {
+        
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        for (const checkbox of checkboxes) {
+            checkbox.checked = false;
+        }
+    }
+
+    function hideModal() {
+        let element = document.getElementById("add_course_form");
+        element.style.display = "none";
+    }
+
+    function getJobs(){
+
+        let arr = [];
+
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        for (const checkbox of checkboxes) {
+            if(checkbox.checked == true) {
+                let obj = {"id": checkbox.id, "name": checkbox.parentNode.innerText}
+                arr.push(obj);
+            }
+        }
+        return JSON.stringify(arr);
+    }
+
+    function getFormData(){
+        let courseSubmitForm = document.getElementById('add_course_form');
+        let formData = new FormData(courseSubmitForm);
+        formData.append("jobs", getJobs());
+        return formData;
+    }
+
+    function postToRoute(){
+        const url = "/insertCourse";
+        const xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                alert(xhr.responseText);
+                //TODO check response and insert new course object in the list if the post was successful, alert otherwise
+            }
+        }
+        xhr.open('POST', url);
+        xhr.send(getFormData());
+    }
+
+    function submitForm(){
+        postToRoute();
+        resetCheckboxes();
+        hideModal();
+    }
+
+</script>
+
+</body>
+
+</html>

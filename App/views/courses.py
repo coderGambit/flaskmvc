@@ -43,6 +43,84 @@ def courseAction():
         return redirect(url_for('courses_views.courses'))# redirect to the dashboard page  
         flash('Error invalid input!')
         return redirect(url_for('courses_views.courses')) 
+     
+
+# Rondell added the following *********************************************
+
+@app.route('/courses_admin')
+def coursesAdmin():
+    # dummy data, get courses from database and send it to the frontend
+    # send all the courses and jobs available in the database
+    # this is ther page where the admin will view, edit, delete, and add courses
+    # route for the add course function defined below this function as insertCourse()
+    courses = [
+        {
+            'courseName': "INFO 2604",
+            'courseDescription': "Data Structures",
+            'skills': ["data Structures", "Algorithms", "C", "C++"]
+        },
+        {
+            'courseName': "INFO 2602",
+            'courseDescription': "Web Programming",
+            'skills': ["HTML", "CSS", "JavaScript", "Python"]
+        }
+    ]
+    jobs = [
+        {
+            "jobID": "123456",
+            "jobName": "Software Engineer",
+            "jobDescription": "Build Great Software!",
+            "requirements": "CS/E Degree"
+        },
+        {
+            "jobID": "5676454",
+            "jobName": "Vagrant",
+            "jobDescription": "Harrass People in the Streets",
+            "requirements": "2 years living on the streets"
+        },
+        {
+            "jobID": "34566",
+            "jobName": "Backend Developer",
+            "jobDescription": "Build Great Backend Software!",
+            "requirements": "CS/E Degree"
+        },
+        {
+            "jobID": "43898934",
+            "jobName": "Frontend Developer",
+            "jobDescription": "Build Great Frontend Software!",
+            "requirements": "CS/E Degree"
+        },
+        {
+            "jobID": "5676454",
+            "jobName": "Java Developer",
+            "jobDescription": "Build Everything with Java",
+            "requirements": "CS/E Degree"
+        }
+    ]
+    return render_template('courses_admin.html', courses=courses, jobs=jobs)
+
+
+@app.route('/insertCourse', methods=['POST'])
+def insertCourse():
+    # retrieve and print form info
+    print(request.form['coursename'])
+    print(request.form['coursedescription'])
+    print(request.form['skills'])
+
+    # sorry, was trying to get the jobs as an array of json jobs object
+    # but i can't send it is an object so it getting converted to a string
+    # the print statement will show the format so you will have to split the string to extract the objects, 
+    # then split it again to get the id and name of the job, then split it one more time to get the actual values
+    # Alternatively, I could just send an array of jobIDs and you could just use that?
+    print(request.form['jobs'])
+
+    # TODO validate form information return "false" if it has invalid information
+
+    # TODO generate a new course object, insert into the database, and pass the course info back to the frontend the same way you were doing before
+    # return course information
+    return ""
+
+#****************************************************************
 
 #<-------------------Delete Course----------------------->
 

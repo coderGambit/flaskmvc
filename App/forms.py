@@ -22,5 +22,5 @@ class CourseForm(FlaskForm):
     coursename = TextField('Course Name', validators=[InputRequired()])
     coursedescription = TextField('Course Description', validators=[InputRequired()])
     skills = TextField('Course Skills', validators=[InputRequired()])
-    jobchoices = SelectMultipleField('Select Job', coerce=int, option_widget=widgets.CheckboxInput(), widget=widgets.ListWidget(prefix_label=False) )
+    jobchoices = MultiCheckboxField('Select Job', coerce=int)
     submit = SubmitField("Submit Course")

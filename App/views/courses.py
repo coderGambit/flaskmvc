@@ -27,10 +27,9 @@ def courses():
 @login_required
 def courseAction():
      form = CourseForm() # create form object
-     if form.validate_on_submit():
+     if request.method == 'POST' and form.validate_on_submit():
         data = request.form # get data from form submission
         newcourse = Courses(courseName=data['coursename'],id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
-        db.session.add(newcourse) # save new course
         accepted = []
         c_records = Jobs.query.all()
         for choice in c_records:

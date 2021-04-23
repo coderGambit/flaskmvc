@@ -11,7 +11,7 @@ class Courses (db.Model):
     courseName = db.Column(db.String(80), nullable=True)
     courseDescription = db.Column(db.String(1000), nullable=True)
     skills = db.Column(db.String(100), nullable=True)
-    jobs = db.relationship('Jobs')
+    jobchoices = db.relationship('Jobs')
     def toDict(self):
         return{
             'courseID': self.courseID,

@@ -11,10 +11,10 @@ from App.forms import CourseForm
 @courses_views.route('/courses', methods=['GET'])
 @login_required
 def courses():
+    jobs = Jobs.query.all()
     form = CourseForm()
     courses = Courses.query.all()
-    jobs = Jobs.query.all()
-    form.jobchoices.choices = [(c.jobID, c.jobName) for c in jobs ]
+    form.jobchoices.choices = [(job.jobID, job.jobName) for job in jobs ]
     return render_template('courses.html', form=form, courses=courses, jobs=jobs)
 
 @courses_views.route("/courses", methods=["GET", "POST"])
@@ -30,7 +30,7 @@ def courseAction():
         for choice in c_records:
             if choice.jobID in form.jobchoices.data:
                 accepted.append(choice)
-        #newcourse.jobs = accepted
+        newcourse.toDict()
         db.session.commit()
         flash('Course Created!')# send message
         return redirect(url_for('courses_views.courses'))# redirect to the dashboard page

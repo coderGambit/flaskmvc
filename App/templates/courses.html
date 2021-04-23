@@ -23,9 +23,16 @@
               {{ form.skills.label }}
             </div>
            <div>
+            {% if form.jobchoices.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.jobchoices.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+             {% endif %}
            {% for choice in form.jobchoices %}
                     <div class="form-check">
-                        {{ choice(class="form-check-input") }}
+                        {{ choice(class="validate") }}
                         {{ choice.label(class="form-check-label") }}
                     </div>
                 {% endfor %}

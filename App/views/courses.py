@@ -73,6 +73,12 @@ def edit_course(courseID):
         course.courseDescription = data['courseDescription']
     if 'skills' in data:
         course.skills = data['skills']
+    if 'jobs' in data['jobs']:
+        accepted = []
+        for jobid in jobids:
+            job = Jobs.query.get(jobid) #Query each JobID
+            accepted.append(job)
+    course.jobs = accepted 
     db.session.add(course)
     db.session.commit()
     return 'Updated', 201

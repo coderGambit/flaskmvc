@@ -25,7 +25,6 @@ def insertCourse():
     coursename = request.form['coursename']  
     coursedescription = request.form['coursedescription']  
     skills = request.form['skills']
-
     #<----Data validation----->
     if (len(coursename) == 0 or len(coursename)>100 or not course.strip()):
         return "Error"
@@ -57,7 +56,7 @@ def delete_course(courseID):
         db.session.commit()
         return course.courseID
     return 'Unauthorized or course not found'
-#<------
+
 # ----------------Edit Course Route-------------------------------->
 
 @courses_views.route('/editCourse/<courseID>', methods=['PUT'])

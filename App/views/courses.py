@@ -51,12 +51,22 @@ def insertCourse():
 @courses_views.route('/deleteCourse/<courseID>', methods=['DELETE'])
 @login_required
 def delete_course(courseID):
+<<<<<<< HEAD
     course = Courses.query.filter_by(id=current_user.id, courseID=courseID).first() 
     if course == None:
         return 'Invalid id or unauthorized'
     db.session.delete(course) # delete the object
     db.session.commit()
     return 'Deleted', 204
+=======
+    course = Courses.query.filter_by(id=current_user.id, courseID=courseID).first() # query course
+    if course:
+        db.session.delete(course)
+        db.session.commit()
+        return course.courseID;
+
+    return 'Unauthorized or course not found'
+>>>>>>> 29729fb6cee8ba262e39ca577f2255b4af77966c
 
 #<----------------------Edit Course Route-------------------------------->
 

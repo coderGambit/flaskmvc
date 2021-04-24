@@ -6,3 +6,4 @@ __pycache__/
 
 App/config.py
 App/test.db
+.idea

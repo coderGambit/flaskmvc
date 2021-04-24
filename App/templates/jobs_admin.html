@@ -1,0 +1,330 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        body{
+            background-color: #A8C6FA;
+        }
+
+        h1{
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        main{
+            display: flex;
+            align-items: center;
+            max-width: max-content;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            gap: 3rem;
+        }
+
+        .jobs_dashboard{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 290px);
+            max-width: 1450px;
+            margin: 0 auto;
+            gap: 3rem;
+            justify-items: center;
+            justify-content: center;
+            align-items: stretch;
+            align-content: center;
+        }
+
+        .job_card{
+            width: 250px;
+            min-height: 125px;
+            background-color: #f73d8a;
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 20px;
+            gap: 20px;
+            box-shadow: 0 0 10px #333333;
+        }
+
+        .job_name{
+            text-align: center;
+            grid-column: 1 / -1;
+            font-weight: 700;
+            color: lightgray;
+            text-transform: uppercase;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .job_description{
+            grid-column: 1 / -1;
+            text-align: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        .job_requirements{
+            grid-column: 1 / -1;
+            text-align: center;
+            overflow: hidden;
+            color: white;
+        }
+
+        .edit_link{
+            align-self: center;
+            justify-self: center;
+            color: var(--headings-color);
+        }
+
+        .delete_link{
+            align-self: center;
+            justify-self: center;
+        }
+
+        .add_job_button_container{
+            display: flex;
+            align-items: center;
+        }
+
+        .circular_button{
+            background-color: darkgray;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px #333333;
+            width: 4rem;
+            height: 4rem;
+            font-size: 4rem;
+            color: white;
+            padding: 0;
+            line-height: 22px;
+        }
+
+        .circular_button:hover{
+            transition-duration: 0.5s;
+            box-shadow: 0 0 10px white;
+        }
+
+        .circular_button:active{
+            transition-duration: 0.05s;
+            background-color: white;
+            color: darkgray;
+        }
+
+        form{
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            gap: 1em;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(247, 61, 138, 0.85);
+            color: white;
+        }
+
+        .submit_job_button{
+            border: none;
+            padding: 1em 2em;
+            background-color: darkgray;
+            color: white;
+            transition-duration: 0.05s;
+            box-shadow: 0 0 10px #333;
+        }
+
+        .submit_job_button:active{
+            background-color: white;
+            color: darkgray;
+        }
+
+        .submit_job_button:hover{
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .exit_form_button{
+            transform: rotate(45deg);
+            position: absolute;
+            top: 80px;
+            right: 80px;
+        }
+
+        .exit_form_button:hover{
+            transform: rotate(45deg);
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>Jobs</h1>
+
+<section class="jobs_dashboard">
+
+    {% for job in jobs %}
+    <article id="{{job.jobID}}" class="job_card">
+
+        <span class="job_name">{{job.jobName}}</span>
+        <span class="job_description">{{job.jobDescription}}</span>
+        <span class="job_requirements">{{job.requirements}}</span>
+        <a href="#" class="edit_link" onclick="editJob('{{job.jobID}}')">Edit</a>
+        <a href="#" onclick="deleteJob('{{job.jobID}}')" class="delete_link">Delete</a>
+
+    </article>
+    {% endfor %}
+
+    <div class="add_job_button_container">
+        <input id="add_job_button" class="circular_button" type="button" value="+" onclick="addJob()">
+    </div>
+
+</section>
+
+<form id="add_job_form" action="/insertJob" method="POST">
+
+    <h1>Add Job</h1>
+
+    <label for="job_name">Job Name</label>
+    <input type="text" id="job_name" name="jobname" placeholder="Job Name">
+
+    <label for="job_description">Job Description</label>
+    <input type="text" id="job_description" name="jobdescription" placeholder="Job Description">
+
+    <label for="job_requirements">Job Requirements</label>
+    <input type="text" id="job_requirements" name="requirements" placeholder="Job Requirements">
+
+    <input type="button" class="submit_job_button" id="submit_job_button" name="submitCourse" value="SUBMIT" onclick="submitForm()">
+
+    <input type="button" class="circular_button exit_form_button" id="exit_course_form_button" name="exitCourseForm" value="+" onclick="exitForm()">
+
+</form>
+
+<script>
+
+    function editJob(id){
+        id = id + "";
+        console.log(id);
+    }
+
+    function deleteJob(id){
+
+        id = id + "";
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if(xhr.status === 200
+                    && xhr.responseText != null
+                    && xhr.responseText.length > 0){
+
+                    if(xhr.responseText === id){
+                        document.getElementById(id).remove();
+                    }
+                    else
+                        alert(xhr.responseText);
+                }
+                else{
+                    alert("There was an error serving your request");
+                }
+            }
+        }
+        postToRoute("/deleteJob/" + id, 'GET', xhr)
+    }
+
+    function hideModal(){
+        let element = document.getElementById("add_job_form");
+        element.style.display = "none";
+    }
+
+    // displays the form to add a new job
+    function addJob(){
+        let element = document.getElementById("add_job_form");
+        element.style.display = "flex";
+    }
+
+    function getFormData(){
+        let jobSubmitForm = document.getElementById('add_job_form');
+        let formData = new FormData(jobSubmitForm);
+        return formData;
+    }
+
+    function insertJob(jobObject){
+
+        let jobID = jobObject.jobID + "";
+
+        let jobCard = document.createElement("article");
+        let jobNameSpan = document.createElement("span");
+        let jobDescriptionSpan = document.createElement("span");
+        let jobRequirementsSpan = document.createElement("span");
+        let editAnchor = document.createElement("a");
+        let deleteAnchor = document.createElement("a");
+
+        jobCard.className = "job_card";
+        jobCard.id = jobID;
+        jobNameSpan.className = "job_name";
+        jobDescriptionSpan.className = "job_description";
+        jobRequirementsSpan.className = "job_requirements";
+        editAnchor.className = "edit_link";
+        editAnchor.href = "#";
+        editAnchor.setAttribute("onclick", `editJob(${jobID})`);
+        deleteAnchor.className = "delete_link";
+        deleteAnchor.href = "#";
+        deleteAnchor.setAttribute("onclick", `deleteJob(${jobID})`);
+
+        jobNameSpan.innerText = jobObject.jobName;
+        jobDescriptionSpan.innerText = jobObject.jobDescription;
+        jobRequirementsSpan.innerText = jobObject.requirements;
+        editAnchor.innerText = "Edit";
+        deleteAnchor.innerText = "Delete";
+
+        jobCard.appendChild(jobNameSpan);
+        jobCard.appendChild(jobDescriptionSpan);
+        jobCard.appendChild(jobRequirementsSpan);
+        jobCard.appendChild(editAnchor);
+        jobCard.appendChild(deleteAnchor);
+
+        let jobDashboardAddButton = document.querySelector(".add_job_button_container");
+        jobDashboardAddButton.insertAdjacentHTML("beforebegin", jobCard.outerHTML);
+    }
+
+    function postToRoute(url, method, xhr, sendingData = null){
+        xhr.open(method, url);
+        xhr.send(sendingData);
+    }
+
+    function submitForm(){
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if(xhr.status === 200
+                    && xhr.responseText != null
+                    && xhr.responseText.length > 0){
+                    let jobObect = JSON.parse(xhr.responseText);
+                    insertJob(jobObect);
+                }
+                else{
+                    alert("There was an error serving your request");
+                }
+            }
+        }
+        postToRoute("/insertJob", 'POST', xhr, getFormData());
+        hideModal();
+    }
+
+    function exitForm(){
+        hideModal();
+    }
+</script>
+
+</body>
+
+</html>

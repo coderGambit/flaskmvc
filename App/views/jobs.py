@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for
+from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for, json
 from flask_login import current_user, login_required
 jobs_views = Blueprint('jobs_views', __name__, template_folder='../templates')
 from App.controllers import(get_jobs_json, get_jobs)
@@ -13,26 +13,36 @@ def coursesAdmin():
     jobs = get_jobs()
     return render_template('jobs_admin.html', jobs=jobs)
 
+#<----------Fixes Serialization Format------------------------------------->
+
+def encoder_jobs(job):
+    if isinstance(job, Jobs):
+        return {'jobName':job.jobName, 'jobDescription': job.jobDescription, 'requirements':job.requirements
+        }
+    raise TypeError(f'Object{job} is not of type Jobs')
+
 #<---------------------------Insert Course Into Database------------------->
 
 @jobs_views.route('/insertJob', methods=['POST'])
 @login_required
 def insertCourse():
-    jobname = request.form['jobName']  
-    jobdescription = request.form['jobDescription']  
-    requirements = request.form['requirements']
+    jobname = request.form.get('jobname') 
+    jobdescription = request.form.get('jobdescription') 
+    requirements = request.form.get('requirements')
+    
     #<----Data validation----->
-    if (len(jobname) == 0 or len(jobname)>100 or not course.strip() or jobname.isdigit() or not jobname.strip()):
-        return "Error"
-    if (len(jobdescription) == 0 or len(jobdsescription) > 1000 or jobdescription.isdigit() or not coursedescription.strip()):
-        return "Error"
-    if (len(requirements) == 0 or len(requirements) >100 or skills.isdigit() or not skills.strip()):
-        return "Error" 
-    if form.validate_on_submit():    
-        newjob = Courses(jobName=data['jobName'], id=current_user.id, jobDescription=data['jobDescription'], requrements=data['requirements']) # create job object   
+    
+    if (len(jobname) == 0 or len(jobname)>100 or not jobname.strip() or jobname.isdigit()):
+        return ""
+    if (len(jobdescription) == 0 or len(jobdescription) > 1000 or jobdescription.isdigit() or not jobdescription.strip()):
+        return ""
+    if (len(requirements) == 0 or len(requirements) >100 or requirements.isdigit() or not requirements.strip()):
+        return "" 
+    else:
+        newjob = Jobs(jobName=jobname, id=current_user.id, jobDescription=jobdescription, requirements=requirements) # create job object   
         db.session.add(newjob) # save new job
         db.session.commit()
-        return json.dumps(newjob)
+    return json.dumps(newjob, default=encoder_jobs)
         
 #<-------------------Delete Course----------------------->
 

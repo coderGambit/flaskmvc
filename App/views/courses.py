@@ -13,32 +13,34 @@ import ast
 def coursesAdmin():
     jobs = get_jobs()
     courses = get_courses()
-    courseskills = [course.skills for course in courses]
-    skills = []
-    for skill in courseskills: 
-        skill = skill.replace('.', '') and skill.replace(',', '')
-        skill = skill.split()
-        skills.append(ast.literal_eval(skill))
-    return render_template('courses_admin.html', courses=courses, jobs=jobs, skills=skills)
+    return render_template('courses_admin.html', courses=courses, jobs=jobs)
+
+def encoder_course(course):
+    if isinstance(course, Courses):
+        return {'courseName':course.courseName, 'courseDescription': course.courseDescription, 'skills':course.skills
+        }
+    raise TypeError(f'Object{course} is not of type Jobs')
 
 #<---------------------------Insert Course Into Database------------------->
 
-@courses_views.route('/insertcourse', methods=['POST'])
+@courses_views.route('/insertCourse', methods=['POST'])
 @login_required
 def insertCourse():
-    coursename = request.form['courseName']  
-    coursedescription = request.form['courseDescription']  
-    skills = request.form['skills']
+    coursename = request.form.get('coursename')  
+    coursedescription = request.form.get('coursedescription') 
+    skills = request.form.get('skills')
+
     #<----Data validation----->
-    if (len(coursename) == 0 or len(coursename)>100 or not course.strip()):
+
+    if (len(coursename) == 0 or len(coursename)>100 or not coursename.strip()):
         return "Error"
     if (len(coursedescription) == 0 or len(coursedescription) > 1000 or coursedescription.isdigit() or not coursedescription.strip()):
         return "Error"
     if (len(skills) == 0 or len(skills) >100 or skills.isdigit() or not skills.strip()):
         return "Error" 
-    if form.validate_on_submit(): 
-        newcourse = Courses(courseName=data['courseName'], id=current_user.id, courseDescription=data['courseDescription'], skills=data['skills']) # create course object   
-        jobids = ast.literal_eval(request.form['jobs']) #Get values as an array of JobID's
+    else:
+        newcourse = Courses(courseName=coursename, id=current_user.id, courseDescription=coursedescription, skills=skills) # create course object   
+        jobids = ast.literal_eval(request.form.get('jobs')) #Get values as an array of JobID's
         accepted = []
         for jobid in jobids:
             job = Jobs.query.get(jobid) #Query each JobID
@@ -46,7 +48,7 @@ def insertCourse():
         newcourse.jobs = accepted
         db.session.add(newcourse)
         db.session.commit()
-    return json.dumps(newcourse)
+    return json.dumps(newcourse, default = encoder_course)
 
 #<-------------------Delete Course----------------------->
 

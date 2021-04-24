@@ -306,7 +306,7 @@
             if (xhr.readyState === XMLHttpRequest.DONE) {
 
                 if(xhr.status === 200
-                    && xhr.responseText != null
+                    && xhr.responseText !== null
                     && xhr.responseText.length > 0){
                     let jobObect = JSON.parse(xhr.responseText);
                     insertJob(jobObect);

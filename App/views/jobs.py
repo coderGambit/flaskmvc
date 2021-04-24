@@ -3,52 +3,65 @@ from flask_login import current_user, login_required
 jobs_views = Blueprint('jobs_views', __name__, template_folder='../templates')
 from App.controllers import(get_jobs_json, get_jobs)
 from App.models import db, Jobs
-from App.forms import JobForm
 
 
-#<-------------Job Form----------------------->
-@jobs_views.route('/jobs', methods=['GET'])
+#<----------------Render Admin Jobs Page and parses jobs------------->
+
+@jobs_views.route('/jobs_admin', methods=['GET'])
 @login_required
-def jobs():
-    form = JobForm()
-    jobs = Jobs.query.all()
-    return render_template('jobs.html', form=form, jobs=jobs)
+def coursesAdmin():
+    jobs = get_jobs()
+    return render_template('jobs_admin.html', jobs=jobs)
 
-@jobs_views.route('/jobs', methods=['POST'])
+#<---------------------------Insert Course Into Database------------------->
+
+@jobs_views.route('/insertjob', methods=['POST'])
 @login_required
-def jobAction():
-  form = JobForm() # create form object
-  if form.validate_on_submit():
-    data = request.form # get data from form submission
-    newjob = Jobs(jobName=data['jobname'], id = current_user.id, jobDescription=data['jobdescription'], requirements=data['requirements']) # create job object
-    db.session.add(newjob) # save new job
-    db.session.commit()
-    flash('Job Created!')# send message
-    return redirect(url_for('jobs_views.jobs'))# redirect to the dashboard page
-  flash('Error invalid input!')
-  return redirect(url_for('jobs_views.jobs'))
+def insertCourse():
+    jobname = request.form['jobname']  
+    jobdescription = request.form['jobdescription']  
+    requirements = request.form['requirements']
+    #<----Data validation----->
+    if (len(jobname) == 0 or len(jobname)>100 or not course.strip() or jobname.isdigit() or not jobname.strip()):
+        return "Error"
+    if (len(jobdescription) == 0 or len(jobdescription) > 1000 or jobdescription.isdigit() or not coursedescription.strip()):
+        return "Error"
+    if (len(requirements) == 0 or len(requirements) >100 or skills.isdigit() or not skills.strip()):
+        return "Error" 
+    if form.validate_on_submit():    
+        newjob = Courses(jobName=data['jobName'], id=current_user.id, jobDescription=data['jobDescription'], requrements=data['requirements']) # create job object   
+        jobids = ast.literal_eval(request.form['jobs']) #Get values as an array of JobID's
+        db.session.add(newjob) # save new job
+        db.session.commit()
+        return json.dumps(newjob)
+        
+#<-------------------Delete Course----------------------->
 
-#<---------------Edit Job Still Editing----------------------->
-
-@jobs_views.route('/editJob/<jobID>', methods=['GET'])
+@jobs_views.route('/deleteJob/<jobID>', methods=['DELETE'])
 @login_required
-def edit_job(jobID): # get the job id from url
-    form = JobForm()
-    return render_template('edit.html', jobID=jobID, form=form) # pass the form and job id to the template
+def delete_job(jobID):
+    job = Job.query.filter_by(id=current_user.id, jobID=jobID).first() # query course
+    if job:
+        db.session.delete(job)
+        db.session.commit()
+        return job.jobID
+    return 'Unauthorized or job not found'
 
-@jobs_views.route('/editJob/<jobID>', methods=['POST'])
+#<---------------Edit Job ----------------------->
+
+@jobs_views.route('/editJob/<jobID>', methods=['PUT'])
 @login_required
-def edit_job_action(jobID):
-  form = JobForm()
-  if form.validate_on_submit():
+def edit_job(jobID):
     job = Jobs.query.filter_by(id=current_user.id, jobID=jobID).first()
-    data = request.form
-    job.jobName = data['jobname'] 
-    job.jobDescription = data['jobdescription']
-    job.requirements = data['requirements']
+    if job == None:
+        return 'Invalid id or unauthorized'
+    data = request.forms
+    if 'jobName' in data:
+        job.jobName = data['jobName']
+    if 'jobDescription' in data:
+        job.jobDescription = data['jobDescription']
+    if 'requirements' in data:
+        job.requrements = data['requirements']  
     db.session.add(job) 
     db.session.commit()
-    flash('Job Updated!')
-    return redirect(url_for('jobs_views.jobs'))
-  flash('Invalid data')
-  return redirect(url_for('jobs_views.jobs'))
+    return 'Updated', 201

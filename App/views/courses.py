@@ -1,6 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for, jsonify, json
 from flask_login import current_user, login_required
-from wtforms import Form, SelectMultipleField
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs, get_jobs_json)
 from App.models import Courses, Jobs, db, User
@@ -14,34 +13,39 @@ import ast
 def coursesAdmin():
     jobs = get_jobs()
     courses = get_courses()
-    return render_template('courses_admin.html', courses=courses, jobs=jobs)
-
+    courseskills = [course.skills for course in courses]
+    skills = []
+    for skill in courseskills: 
+        skill = skill.replace('.', '') and skill.replace(',', '')
+        skill = skill.split()
+        skills.append(ast.literal_eval(skill))
+    return render_template('courses_admin.html', courses=courses, jobs=jobs, skills=skills)
 
 #<---------------------------Insert Course Into Database------------------->
 
 @courses_views.route('/insertcourse', methods=['POST'])
 @login_required
 def insertCourse():
-    coursename = request.form['coursename']  
-    coursedescription = request.form['coursedescription']  
+    coursename = request.form['courseName']  
+    coursedescription = request.form['courseDescription']  
     skills = request.form['skills']
     #<----Data validation----->
     if (len(coursename) == 0 or len(coursename)>100 or not course.strip()):
-        return False
+        return "Error"
     if (len(coursedescription) == 0 or len(coursedescription) > 1000 or coursedescription.isdigit() or not coursedescription.strip()):
-        return False
+        return "Error"
     if (len(skills) == 0 or len(skills) >100 or skills.isdigit() or not skills.strip()):
-        return False 
-    if form.validate_on_submit():    
-        newcourse = Courses(courseName=data['coursename'], id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object   
-    jobids = ast.literal_eval(request.form['jobs']) #Get values as an array of JobID's
-    accepted = []
-    for jobid in jobids:
-        job = Jobs.query.get(jobid) #Query each JobID
-        accepted.append(job) #appends the object to an array of objects
-    newcourse.jobs = accepted
-    db.session.add(newcourse)
-    db.session.commit()
+        return "Error" 
+    if form.validate_on_submit(): 
+        newcourse = Courses(courseName=data['courseName'], id=current_user.id, courseDescription=data['courseDescription'], skills=data['skills']) # create course object   
+        jobids = ast.literal_eval(request.form['jobs']) #Get values as an array of JobID's
+        accepted = []
+        for jobid in jobids:
+            job = Jobs.query.get(jobid) #Query each JobID
+            accepted.append(job) #appends the object to an array of objects
+        newcourse.jobs = accepted
+        db.session.add(newcourse)
+        db.session.commit()
     return json.dumps(newcourse)
 
 #<-------------------Delete Course----------------------->

@@ -131,10 +131,9 @@ def delete_course(courseID):
     if course:
         db.session.delete(course)
         db.session.commit()
-        flash('Course Deleted!')
-        return redirect(url_for('courses_views.courses'))
-    flash('Unauthorized or course not found')
-    return redirect(url_for('courses_views.courses'))
+        return course.courseID;
+
+    return 'Unauthorized or course not found'
 
 #<----------------------Select Course Route-------------------------------->
 

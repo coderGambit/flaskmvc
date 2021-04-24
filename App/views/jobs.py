@@ -15,7 +15,7 @@ def coursesAdmin():
 
 #<---------------------------Insert Course Into Database------------------->
 
-@jobs_views.route('/insertjob', methods=['POST'])
+@jobs_views.route('/insertJob', methods=['POST'])
 @login_required
 def insertCourse():
     jobname = request.form['jobName']  

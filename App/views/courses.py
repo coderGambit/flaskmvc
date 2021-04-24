@@ -23,7 +23,7 @@ def coursesAdmin():
 
 #<---------------------------Insert Course Into Database------------------->
 
-@courses_views.route('/insertcourse', methods=['POST'])
+@courses_views.route('/insertCourse', methods=['POST'])
 @login_required
 def insertCourse():
     coursename = request.form['courseName']  

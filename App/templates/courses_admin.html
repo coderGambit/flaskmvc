@@ -139,7 +139,7 @@
             align-items: center;
         }
 
-        .add_course_button {
+        .circular_button {
             background-color: darkgray;
             border-radius: 50%;
             border: none;
@@ -150,15 +150,15 @@
             color: white;
             padding: 0;
             line-height: 22px;
+        }
+
+        .circular_button:hover {
+            box-shadow: 0 0 10px white;
             transition-duration: 0.05s;
         }
 
-        .add_course_button:hover {
-            transition-duration: 0.5s;
-            transform: rotate(360deg);
-        }
-
-        .add_course_button:active {
+        .circular_button:active {
+            transition-duration: 0.05s;
             background-color: white;
             color: darkgray;
         }
@@ -225,6 +225,17 @@
             box-shadow: 0 0 10px #fff;
         }
 
+        .exit_form_button{
+            transform: rotate(45deg);
+            position: absolute;
+            top: 80px;
+            right: 80px;
+        }
+
+        .exit_form_button:hover{
+            transform: rotate(45deg);
+        }
+
     </style>
 
 </head>
@@ -236,32 +247,32 @@
 
     {% for course in courses %}
 
-        <article class="course_card">
+    <article id="{{course.courseID}}" class="course_card">
 
-            <span class="course_name">{{course.courseName}}</span>
-            <span class="course_title">{{course.courseDescription}}</span>
+        <span class="course_name">{{course.courseName}}</span>
+        <span class="course_title">{{course.courseDescription}}</span>
 
-            <section class="skill_list">
+        <section class="skill_list">
             {% for skill in course.skills %}
 
-                <article class="skill_container">
+            <article class="skill_container">
 
-                    <strong>{{skill}}</strong>
+                <strong>{{skill}}</strong>
 
-                </article>
+            </article>
 
             {% endfor %}
-            </section>
+        </section>
 
-            <a href="#" class="edit_link" onclick="editCourse()">Edit</a>
-            <a href="#" onclick="deleteCourse()" class="delete_link">Delete</a>
+        <a href="#" class="edit_link" onclick="editCourse('{{course.courseID}}')">Edit</a>
+        <a href="#" onclick="deleteCourse('{{course.courseID}}')" class="delete_link">Delete</a>
 
-        </article>
+    </article>
 
     {% endfor %}
 
     <div class="add_course_button_container">
-        <input id="add_course_button" class="add_course_button" type="button" value="+" onclick="addCourse()">
+        <input id="add_course_button" class="circular_button" type="button" value="+" onclick="addCourse()">
     </div>
 
 </section>
@@ -284,7 +295,7 @@
 
         <ul id="menu_items" class="menu_items" name="jobs">
             {% for job in jobs %}
-                <li><input id="{{job.jobID}}" type="checkbox"/>{{job.jobName}}</li>
+            <li><input id="{{job.jobID}}" type="checkbox"/>{{job.jobName}}</li>
             {% endfor %}
         </ul>
 
@@ -292,16 +303,44 @@
 
     <input type="button" class="submit_course_button" id="submit_course_button" name="submitCourse" value="SUBMIT" onclick="submitForm()">
 
+    <input type="button" class="circular_button exit_form_button" id="exit_course_form_button" name="exitCourseForm" value="+" onclick="exitForm()">
+
 </form>
 
 <script>
 
-    function editCourse() {
-
+    function editCourse(id) {
+        // programmatically adding these functions with interpolated version of id causing it to be
+        // passed as an integer instead of string so converting it back here
+        id = id + "";
+        console.log(id);
     }
 
-    function deleteCourse() {
+    function deleteCourse(id) {
+        // programmatically adding these functions with interpolated version of id causing it to be
+        // passed as an integer instead of string so converting it back here
+        id = id + "";
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
 
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if(xhr.status === 200
+                    && xhr.responseText != null
+                    && xhr.responseText.length > 0){
+
+                    if(xhr.responseText === id){
+                        document.getElementById(id).remove();
+                    }
+                    else
+                        alert(xhr.responseText);
+                }
+                else{
+                    alert("There was an error serving your request");
+                }
+            }
+        }
+        postToRoute("/deleteCourse/" + id, 'GET', xhr)
     }
 
     // displays the form to add a new course
@@ -313,7 +352,7 @@
 
     // the following set of functions deals with submitting the form to add a new course
     function resetCheckboxes() {
-        
+
         let checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
         for (const checkbox of checkboxes) {
@@ -326,7 +365,7 @@
         element.style.display = "none";
     }
 
-    function getJobs(){
+    function getJobIDs(){
 
         let arr = [];
 
@@ -334,8 +373,7 @@
 
         for (const checkbox of checkboxes) {
             if(checkbox.checked == true) {
-                let obj = {"id": checkbox.id, "name": checkbox.parentNode.innerText}
-                arr.push(obj);
+                arr.push(checkbox.id);
             }
         }
         return JSON.stringify(arr);
@@ -344,27 +382,88 @@
     function getFormData(){
         let courseSubmitForm = document.getElementById('add_course_form');
         let formData = new FormData(courseSubmitForm);
-        formData.append("jobs", getJobs());
+        formData.append("jobs", getJobIDs());
         return formData;
     }
 
-    function postToRoute(){
-        const url = "/insertCourse";
-        const xhr = new XMLHttpRequest();
+    function insertCourse(courseObject){
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                alert(xhr.responseText);
-                //TODO check response and insert new course object in the list if the post was successful, alert otherwise
-            }
+        // since in the jinja template this is converted into a string, do the same here
+        let courseID = courseObject.courseID + "";
+
+        let courseCard = document.createElement("article");
+        let courseNameSpan = document.createElement("span");
+        let courseTitleSpan = document.createElement("span");
+        let skillListSection = document.createElement("section");
+        let editAnchor = document.createElement("a");
+        let deleteAnchor = document.createElement("a");
+
+        courseCard.className = "course_card";
+        courseCard.id = courseID;
+        courseNameSpan.className = "course_name";
+        courseTitleSpan.className = "course_title";
+        skillListSection.className = "skill_list";
+        editAnchor.className = "edit_link";
+        editAnchor.href = "#";
+        editAnchor.setAttribute("onclick", `editCourse(${courseID})`);
+        deleteAnchor.className = "delete_link";
+        deleteAnchor.href = "#";
+        deleteAnchor.setAttribute("onclick", `deleteCourse(${courseID})`);
+
+        courseNameSpan.innerText = courseObject.courseName;
+        courseTitleSpan.innerText = courseObject.courseDescription;
+        editAnchor.innerText = "Edit";
+        deleteAnchor.innerText = "Delete";
+
+        courseCard.appendChild(courseNameSpan);
+        courseCard.appendChild(courseTitleSpan);
+
+        for(const skill of courseObject.skills){
+
+            let skillContainer = document.createElement("article");
+            let strong = document.createElement("strong");
+
+            skillContainer.className = "skill_container";
+            strong.innerText = skill;
+            skillContainer.appendChild(strong);
+            skillListSection.appendChild(skillContainer);
         }
-        xhr.open('POST', url);
-        xhr.send(getFormData());
+        courseCard.appendChild(skillListSection);
+        courseCard.appendChild(editAnchor);
+        courseCard.appendChild(deleteAnchor);
+
+        let courseDashboardAddButton = document.querySelector(".add_course_button_container");
+        courseDashboardAddButton.insertAdjacentHTML("beforebegin", courseCard.outerHTML);
+    }
+
+    function postToRoute(url, method, xhr, sendingData = null){
+        xhr.open(method, url);
+        xhr.send(sendingData);
     }
 
     function submitForm(){
-        postToRoute();
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if(xhr.status === 200
+                    && xhr.responseText != null
+                    && xhr.responseText.length > 0){
+                    let courseObject = JSON.parse(xhr.responseText);
+                    insertCourse(courseObject);
+                }
+                else{
+                    alert("There was an error serving your request");
+                }
+            }
+        }
+        postToRoute("/insertCourse", 'POST', xhr, getFormData());
         resetCheckboxes();
+        hideModal();
+    }
+
+    function exitForm(){
         hideModal();
     }
 

@@ -74,8 +74,7 @@ def edit_course(courseID):
     if 'skills' in data:
         course.skills = data['skills']
     if 'jobs' in data['jobs']:
-        accepted = []
-        for jobid in jobids:
+        for jobid in data['jobs']:
             job = Jobs.query.get(jobid) #Query each JobID
             accepted.append(job)
     course.jobs = accepted 

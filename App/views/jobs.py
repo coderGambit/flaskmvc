@@ -18,19 +18,18 @@ def coursesAdmin():
 @jobs_views.route('/insertjob', methods=['POST'])
 @login_required
 def insertCourse():
-    jobname = request.form['jobname']  
-    jobdescription = request.form['jobdescription']  
+    jobname = request.form['jobName']  
+    jobdescription = request.form['jobDescription']  
     requirements = request.form['requirements']
     #<----Data validation----->
     if (len(jobname) == 0 or len(jobname)>100 or not course.strip() or jobname.isdigit() or not jobname.strip()):
         return "Error"
-    if (len(jobdescription) == 0 or len(jobdescription) > 1000 or jobdescription.isdigit() or not coursedescription.strip()):
+    if (len(jobdescription) == 0 or len(jobdsescription) > 1000 or jobdescription.isdigit() or not coursedescription.strip()):
         return "Error"
     if (len(requirements) == 0 or len(requirements) >100 or skills.isdigit() or not skills.strip()):
         return "Error" 
     if form.validate_on_submit():    
         newjob = Courses(jobName=data['jobName'], id=current_user.id, jobDescription=data['jobDescription'], requrements=data['requirements']) # create job object   
-        jobids = ast.literal_eval(request.form['jobs']) #Get values as an array of JobID's
         db.session.add(newjob) # save new job
         db.session.commit()
         return json.dumps(newjob)

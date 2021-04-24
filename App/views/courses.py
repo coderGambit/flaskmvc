@@ -37,8 +37,8 @@ def insertCourse():
     jobids = ast.literal_eval(request.form['jobs']) #Get values as an array of JobID's
     accepted = []
     for jobid in jobids:
-        job = Jobs.query.get(jobid) #Query eacj JobID
-        accepted.append(job)
+        job = Jobs.query.get(jobid) #Query each JobID
+        accepted.append(job) #appends the object to an array of objects
     newcourse.jobs = accepted
     db.session.add(newcourse)
     db.session.commit()

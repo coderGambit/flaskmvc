@@ -28,11 +28,11 @@ def insertCourse():
 
     #<----Data validation----->
     if (len(coursename) == 0 or len(coursename)>100 or not course.strip()):
-        return False
+        return "Error"
     if (len(coursedescription) == 0 or len(coursedescription) > 1000 or coursedescription.isdigit() or not coursedescription.strip()):
-        return False
+        return "Error"
     if (len(skills) == 0 or len(skills) >100 or skills.isdigit() or not skills.strip()):
-        return False 
+        return "Error" 
     
     if form.validate_on_submit():    
         newcourse = Courses(courseName=data['coursename'], id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object   

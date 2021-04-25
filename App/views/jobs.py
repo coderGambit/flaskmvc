@@ -39,21 +39,21 @@ def insertCourse():
     if (len(requirements) == 0 or len(requirements) >100 or requirements.isdigit() or not requirements.strip()):
         return "" 
     else:
-        newjob = Jobs(jobName=jobname, id=current_user.id, jobDescription=jobdescription, requirements=requirements) # create job object   
+        newjob = Jobs(jobName=jobname, jobDescription=jobdescription, requirements=requirements) # create job object
         db.session.add(newjob) # save new job
         db.session.commit()
-    return json.dumps(newjob, default=encoder_jobs)
+    return json.dumps(newjob.toDict())
         
 #<-------------------Delete Course----------------------->
 
 @jobs_views.route('/deleteJob/<jobID>', methods=['GET'])
 @login_required
 def delete_job(jobID):
-    job = Jobs.query.filter_by(id=current_user.id, jobID=jobID).first() # query course
+    job = Jobs.query.get(jobID)# query course
     if job:
         db.session.delete(job)
         db.session.commit()
-        return job.jobID
+        return jobID
     return 'Unauthorized or job not found'
 
 #<---------------Edit Job ----------------------->

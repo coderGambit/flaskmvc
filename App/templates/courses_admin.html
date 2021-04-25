@@ -7,6 +7,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            display: flex;
+            background-color: #333333;
+            padding: 1rem 0;
+        }
+
+        header > a {
+            font-size: 1rem;
+            padding: 0 1rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        header > a:hover {
+            color: white;
+        }
+
+        .home_link {
+            margin-left: auto;
+        }
+
+        .login_link{
+            display: none;
+        }
+
         body {
             background-color: #A8C6FA;
         }
@@ -14,6 +45,15 @@
         h1 {
             text-align: center;
             margin-bottom: 5rem;
+        }
+
+        main {
+            display: flex;
+            align-items: center;
+            max-width: max-content;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            gap: 3rem;
         }
 
         .course_dashboard {
@@ -44,7 +84,7 @@
             text-align: center;
             grid-column: 1 / -1;
             font-weight: 700;
-            color: var(--text-color);
+            color: darkgray;
             text-transform: uppercase;
             overflow: hidden;
         }
@@ -55,8 +95,7 @@
             overflow: hidden;
         }
 
-        .skill_list{
-            max-width: max-content;
+        .skill_list {
             display: flex;
             justify-content: center;
             gap: 5px;
@@ -64,37 +103,37 @@
             grid-column: 1 / -1;
         }
 
-        .skill_container:nth-child(6n + 1){
+        .skill_container:nth-child(6n + 1) {
             background-color: #f7aa3d;
             color: black;
         }
 
-        .skill_container:nth-child(6n + 2){
+        .skill_container:nth-child(6n + 2) {
             background-color: #3de7f7;
             color: black;
         }
 
-        .skill_container:nth-child(6n + 3){
+        .skill_container:nth-child(6n + 3) {
             background-color: #f73d8a;
             color: white;
         }
 
-        .skill_container:nth-child(6n + 4){
+        .skill_container:nth-child(6n + 4) {
             background-color: #3df7aa;
             color: black;
         }
 
-        .skill_container:nth-child(6n + 5){
+        .skill_container:nth-child(6n + 5) {
             background-color: #f74d3d;
             color: white;
         }
 
-        .skill_container:nth-child(6n + 6){
+        .skill_container:nth-child(6n + 6) {
             background-color: #8af73d;
             color: black;
         }
 
-        .skill_container{
+        .skill_container {
             max-width: max-content;
             padding: 5px 10px;
             border-radius: 50px;
@@ -117,7 +156,7 @@
             justify-self: center;
         }
 
-        .add_course_button_container{
+        .add_course_button_container {
             display: flex;
             align-items: center;
         }
@@ -208,14 +247,14 @@
             box-shadow: 0 0 10px #fff;
         }
 
-        .exit_form_button{
+        .exit_form_button {
             transform: rotate(45deg);
             position: absolute;
             top: 80px;
             right: 80px;
         }
 
-        .exit_form_button:hover{
+        .exit_form_button:hover {
             transform: rotate(45deg);
         }
 
@@ -223,6 +262,14 @@
 
 </head>
 <body>
+
+<header>
+
+    <a class="home_link" href="/">Home</a>
+    <a class="login_link" href="/login">Login</a>
+    <a class="logout_link" href="/logout">Logout</a>
+
+</header>
 
 <h1>Courses</h1>
 
@@ -255,7 +302,8 @@
     {% endfor %}
 
     <div class="add_course_button_container">
-        <input id="add_course_button" class="circular_button" type="button" value="+" onclick="addCourse()">
+        <input id="add_course_button" class="circular_button" type="button" value="+"
+               onclick="addCourse()">
     </div>
 
 </section>
@@ -284,9 +332,11 @@
 
     </div>
 
-    <input type="button" class="submit_course_button" id="submit_course_button" name="submitCourse" value="SUBMIT" onclick="submitForm()">
+    <input type="button" class="submit_course_button" id="submit_course_button" name="submitCourse"
+           value="SUBMIT" onclick="submitForm()">
 
-    <input type="button" class="circular_button exit_form_button" id="exit_course_form_button" name="exitCourseForm" value="+" onclick="exitForm()">
+    <input type="button" class="circular_button exit_form_button" id="exit_course_form_button"
+           name="exitCourseForm" value="+" onclick="exitForm()">
 
 </form>
 
@@ -304,21 +354,19 @@
         // passed as an integer instead of string so converting it back here
         id = id + "";
         let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(){
+        xhr.onreadystatechange = function () {
 
             if (xhr.readyState === XMLHttpRequest.DONE) {
 
-                if(xhr.status === 200
+                if (xhr.status === 200
                     && xhr.responseText != null
-                    && xhr.responseText.length > 0){
+                    && xhr.responseText.length > 0) {
 
-                    if(xhr.responseText === id){
+                    if (xhr.responseText === id) {
                         document.getElementById(id).remove();
-                    }
-                    else
+                    } else
                         alert(xhr.responseText);
-                }
-                else{
+                } else {
                     alert("There was an error serving your request");
                 }
             }
@@ -348,28 +396,28 @@
         element.style.display = "none";
     }
 
-    function getJobIDs(){
+    function getJobIDs() {
 
         let arr = [];
 
         let checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
         for (const checkbox of checkboxes) {
-            if(checkbox.checked == true) {
+            if (checkbox.checked == true) {
                 arr.push(checkbox.id);
             }
         }
         return JSON.stringify(arr);
     }
 
-    function getFormData(){
+    function getFormData() {
         let courseSubmitForm = document.getElementById('add_course_form');
         let formData = new FormData(courseSubmitForm);
         formData.append("jobs", getJobIDs());
         return formData;
     }
 
-    function insertCourse(courseObject){
+    function insertCourse(courseObject) {
 
         // since in the jinja template this is converted into a string, do the same here
         let courseID = courseObject.courseID + "";
@@ -401,7 +449,7 @@
         courseCard.appendChild(courseNameSpan);
         courseCard.appendChild(courseTitleSpan);
 
-        for(const skill of courseObject.skills){
+        for (const skill of courseObject.skills) {
 
             let skillContainer = document.createElement("article");
             let strong = document.createElement("strong");
@@ -419,24 +467,23 @@
         courseDashboardAddButton.insertAdjacentHTML("beforebegin", courseCard.outerHTML);
     }
 
-    function postToRoute(url, method, xhr, sendingData = null){
+    function postToRoute(url, method, xhr, sendingData = null) {
         xhr.open(method, url);
         xhr.send(sendingData);
     }
 
-    function submitForm(){
+    function submitForm() {
         const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(){
+        xhr.onreadystatechange = function () {
 
             if (xhr.readyState === XMLHttpRequest.DONE) {
 
-                if(xhr.status === 200
-                    && xhr.responseText !== null
-                    && xhr.responseText.length > 0){
+                if (xhr.status === 200
+                    && xhr.responseText != null
+                    && xhr.responseText.length > 0) {
                     let courseObject = JSON.parse(xhr.responseText);
                     insertCourse(courseObject);
-                }
-                else{
+                } else {
                     alert("There was an error serving your request");
                 }
             }
@@ -446,7 +493,7 @@
         hideModal();
     }
 
-    function exitForm(){
+    function exitForm() {
         hideModal();
     }
 

@@ -7,11 +7,38 @@
 
     <style>
 
-        body{
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            display: flex;
+            background-color: #333333;
+            padding: 1rem 0;
+        }
+
+        header > a {
+            font-size: 1rem;
+            padding: 0 1rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        header > a:hover {
+            color: white;
+        }
+
+        .home_link {
+            margin-left: auto;
+        }
+
+        body {
             background-color: #A8C6FA;
         }
 
-        .main_container{
+        .main_container {
             margin: 0 auto;
             display: flex;
             height: auto;
@@ -20,7 +47,7 @@
             justify-content: space-evenly;
         }
 
-        form{
+        form {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -30,13 +57,13 @@
             margin: 0 50px 0 0;
         }
 
-        .fnln_flex_container{
+        .fnln_flex_container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
         }
 
-        input[type="button"]{
+        input[type="button"] {
             background-color: black;
             color: white;
             border: none;
@@ -46,25 +73,25 @@
             transition-duration: 0.05s;
         }
 
-        input[type="button"]:active{
+        input[type="button"]:active {
             background-color: white;
             color: black;
         }
 
-        input[type="button"]:hover{
+        input[type="button"]:hover {
             box-shadow: 0 0 10px #fff;
         }
 
-        .about_section{
+        .about_section {
             flex-grow: 1;
             position: relative;
         }
 
-        .about_section_photo{
+        .about_section_photo {
             max-width: 100%;
         }
 
-        .about_section_text_container{
+        .about_section_text_container {
             display: grid;
             justify-content: center;
             align-content: center;
@@ -77,8 +104,8 @@
             background-color: rgba(168, 198, 250, 0.55);
         }
 
-        @media only screen and (max-width: 800px){
-            .about_section{
+        @media only screen and (max-width: 800px) {
+            .about_section {
                 display: none;
             }
         }
@@ -88,6 +115,14 @@
 
 <body>
 
+<header>
+
+    <a class="home_link" href="/">Home</a>
+    <a class="login_link" href="/login">Login</a>
+    <a class="logout_link" href="/logout">Logout</a>
+
+</header>
+
 <div class="main_container">
 
     <form action="/login" method="POST">
@@ -95,8 +130,10 @@
 
         <img src="https://picsum.photos/100" alt="logo">
         <h1>Log In</h1>
-        <label for="username">Username</label><input size="20" type="text" id="username" name="username" placeholder="Username">
-        <label for="password">Password</label><input size="20" type="password" id="password" name="password" placeholder="Password">
+        <label for="username">Username</label><input size="20" type="text" id="username"
+                                                     name="username" placeholder="Username">
+        <label for="password">Password</label><input size="20" type="password" id="password"
+                                                     name="password" placeholder="Password">
         <input type="submit" id="log_in" name="logIn" value="LOGIN">
 
     </form>

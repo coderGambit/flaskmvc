@@ -302,7 +302,6 @@
         let jobNameSpan = document.createElement("span");
         let jobDescriptionSpan = document.createElement("span");
         let jobRequirementsSpan = document.createElement("span");
-        let editAnchor = document.createElement("a");
         let deleteAnchor = document.createElement("a");
 
         jobCard.className = "job_card";
@@ -310,9 +309,6 @@
         jobNameSpan.className = "job_name";
         jobDescriptionSpan.className = "job_description";
         jobRequirementsSpan.className = "job_requirements";
-        editAnchor.className = "edit_link";
-        editAnchor.href = "#";
-        editAnchor.setAttribute("onclick", `editJob(${jobID})`);
         deleteAnchor.className = "delete_link";
         deleteAnchor.href = "#";
         deleteAnchor.setAttribute("onclick", `deleteJob(${jobID})`);
@@ -320,13 +316,11 @@
         jobNameSpan.innerText = jobObject.jobName;
         jobDescriptionSpan.innerText = jobObject.jobDescription;
         jobRequirementsSpan.innerText = jobObject.requirements;
-        editAnchor.innerText = "Edit";
         deleteAnchor.innerText = "Delete";
 
         jobCard.appendChild(jobNameSpan);
         jobCard.appendChild(jobDescriptionSpan);
         jobCard.appendChild(jobRequirementsSpan);
-        jobCard.appendChild(editAnchor);
         jobCard.appendChild(deleteAnchor);
 
         let jobDashboardAddButton = document.querySelector(".add_job_button_container");

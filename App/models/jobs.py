@@ -8,7 +8,7 @@ from .coursejobs import *
 
 
 class Jobs (db.Model):
-    jobID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    jobID = db.Column(db.Integer, primary_key=True)
     id = db.Column('id', db.Integer, db.ForeignKey('user.id'))
     jobName = db.Column(db.String(80), nullable=False)
     jobDescription = db.Column(db.String(1000), nullable=False)

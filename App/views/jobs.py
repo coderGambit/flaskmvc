@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 jobs_views = Blueprint('jobs_views', __name__, template_folder='../templates')
 from App.controllers import(get_jobs_json, get_jobs)
 from App.models import db, Jobs
+import uuid
 
 
 #<----------------Render Admin Jobs Page and parses jobs------------->
@@ -39,7 +40,7 @@ def insertCourse():
     if (len(requirements) == 0 or len(requirements) >100 or requirements.isdigit() or not requirements.strip()):
         return "" 
     else:
-        newjob = Jobs(jobName=jobname, jobDescription=jobdescription, requirements=requirements) # create job object
+        newjob = Jobs(jobName=jobname, jobID=uuid.uuid4().int & 0xfffff, jobDescription=jobdescription, requirements=requirements) # create job object
         db.session.add(newjob) # save new job
         db.session.commit()
     return json.dumps(newjob.toDict())

@@ -5,6 +5,7 @@ courses_views = Blueprint('courses_views', __name__, template_folder='../templat
 from App.controllers import(get_courses_json, get_courses, get_jobs, get_jobs_json)
 from App.models import Courses, Jobs, db, User, CourseJobs
 import ast
+import uuid
 
 #<----------------Render Admin Course and parses jobs and courses------------->
 
@@ -39,11 +40,12 @@ def insertCourse():
     if (len(skills) == 0 or len(skills) >100 or skills.isdigit() or not skills.strip()):
         return "Error" 
     else:
-        newcourse = Courses(courseName=coursename, id=current_user.id, courseDescription=coursedescription, skills=skills) # create course object   
+        newcourse = Courses(courseName=coursename, courseID=uuid.uuid4().int & 0xfffff, courseDescription=coursedescription, skills=skills) # create course object
         
         jobids = ast.literal_eval(request.form.get('jobs')) #Get values as an array of JobID's
         courseID = newcourse.toDict()["courseID"]
         db.session.add(newcourse)
+
         
         for jobid in jobids:
             job = Jobs.query.get(jobid)
@@ -60,11 +62,11 @@ def insertCourse():
 @courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
 @login_required
 def delete_course(courseID):
-    course = Courses.query.filter_by(id=current_user.id, courseID=courseID).first() # query course
+    course = Courses.query.get(courseID) # query course
     if course:
         db.session.delete(course)
         db.session.commit()
-        return course.courseID
+        return courseID
     return 'Unauthorized or course not found'
 
 # ----------------Edit Course Route-------------------------------->

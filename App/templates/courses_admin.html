@@ -152,6 +152,7 @@
         }
 
         .delete_link {
+            grid-column: 1 / -1;
             align-self: center;
             justify-self: center;
         }
@@ -293,7 +294,6 @@
             {% endfor %}
         </section>
 
-        <a href="#" class="edit_link" onclick="editCourse('{{course.courseID}}')">Edit</a>
         <a href="#" onclick="deleteCourse('{{course.courseID}}')" class="delete_link">Delete</a>
 
     </article>
@@ -425,7 +425,6 @@
         let courseNameSpan = document.createElement("span");
         let courseTitleSpan = document.createElement("span");
         let skillListSection = document.createElement("section");
-        let editAnchor = document.createElement("a");
         let deleteAnchor = document.createElement("a");
 
         courseCard.className = "course_card";
@@ -433,16 +432,12 @@
         courseNameSpan.className = "course_name";
         courseTitleSpan.className = "course_title";
         skillListSection.className = "skill_list";
-        editAnchor.className = "edit_link";
-        editAnchor.href = "#";
-        editAnchor.setAttribute("onclick", `editCourse(${courseID})`);
         deleteAnchor.className = "delete_link";
         deleteAnchor.href = "#";
         deleteAnchor.setAttribute("onclick", `deleteCourse(${courseID})`);
 
         courseNameSpan.innerText = courseObject.courseName;
         courseTitleSpan.innerText = courseObject.courseDescription;
-        editAnchor.innerText = "Edit";
         deleteAnchor.innerText = "Delete";
 
         courseCard.appendChild(courseNameSpan);
@@ -459,7 +454,6 @@
             skillListSection.appendChild(skillContainer);
         }
         courseCard.appendChild(skillListSection);
-        courseCard.appendChild(editAnchor);
         courseCard.appendChild(deleteAnchor);
 
         let courseDashboardAddButton = document.querySelector(".add_course_button_container");

@@ -39,20 +39,46 @@ def insertCourse():
     if (len(requirements) == 0 or len(requirements) >100 or requirements.isdigit() or not requirements.strip()):
         return "" 
     else:
-        newjob = Jobs(jobName=jobname, id=current_user.id, jobDescription=jobdescription, requirements=requirements) # create job object   
+        newjob = Jobs(jobName=jobname, jobDescription=jobdescription, requirements=requirements) # create job object
         db.session.add(newjob) # save new job
         db.session.commit()
-    return json.dumps(newjob, default=encoder_jobs)
+    return json.dumps(newjob.toDict())
         
 #<-------------------Delete Course----------------------->
 
 @jobs_views.route('/deleteJob/<jobID>', methods=['GET'])
 @login_required
 def delete_job(jobID):
+<<<<<<< HEAD
     job = Jobs.query.get(jobID)  # query course
     if job is None:
         return 'Unauthorized or job not found'
     db.session.delete(job)
+=======
+    job = Jobs.query.get(jobID)# query course
+    if job:
+        db.session.delete(job)
+        db.session.commit()
+        return jobID
+    return 'Unauthorized or job not found'
+
+#<---------------Edit Job ----------------------->
+
+@jobs_views.route('/editJob/<jobID>', methods=['PUT'])
+@login_required
+def edit_job(jobID):
+    job = Jobs.query.filter_by(id=current_user.id, jobID=jobID).first()
+    if job == None:
+        return 'Invalid id or unauthorized'
+    data = request.forms
+    if 'jobname' in data:
+        job.jobName = data['jobname']
+    if 'jobdescription' in data:
+        job.jobDescription = data['jobdescription']
+    if 'requirements' in data:
+        job.requrements = data['requirements']  
+    db.session.add(job) 
+>>>>>>> cf5e7f2cc304a85c771c0015f29d41b301610aef
     db.session.commit()
     return job.toDict
     

@@ -18,6 +18,5 @@ class Courses (db.Model):
             'courseID': self.courseID,
             'courseName': self.courseName,
             'courseDescription': self.courseDescription,
-            'skills': self.skills,
-            'jobinfo':self.jobs.toDict()
+            'skills': self.skills
             }

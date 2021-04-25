@@ -46,10 +46,10 @@ def insertCourse():
         
 #<-------------------Delete Course----------------------->
 
-@jobs_views.route('/deleteJob/<jobID>', methods=['DELETE'])
+@jobs_views.route('/deleteJob/<jobID>', methods=['GET'])
 @login_required
 def delete_job(jobID):
-    job = Job.query.filter_by(id=current_user.id, jobID=jobID).first() # query course
+    job = Jobs.query.filter_by(id=current_user.id, jobID=jobID).first() # query course
     if job:
         db.session.delete(job)
         db.session.commit()
@@ -65,10 +65,10 @@ def edit_job(jobID):
     if job == None:
         return 'Invalid id or unauthorized'
     data = request.forms
-    if 'jobName' in data:
-        job.jobName = data['jobName']
-    if 'jobDescription' in data:
-        job.jobDescription = data['jobDescription']
+    if 'jobname' in data:
+        job.jobName = data['jobname']
+    if 'jobdescription' in data:
+        job.jobDescription = data['jobdescription']
     if 'requirements' in data:
         job.requrements = data['requirements']  
     db.session.add(job) 

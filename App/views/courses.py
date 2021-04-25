@@ -57,7 +57,7 @@ def insertCourse():
 
 #<-------------------Delete Course----------------------->
 
-@courses_views.route('/deleteCourse/<courseID>', methods=['DELETE'])
+@courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
 @login_required
 def delete_course(courseID):
     course = Courses.query.filter_by(id=current_user.id, courseID=courseID).first() # query course

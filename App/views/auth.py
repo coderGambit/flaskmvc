@@ -19,7 +19,7 @@ def loginAction():
         user = User.query.filter_by(username = data['username']).first()
         if user and user.check_password(data['password']): # check credentials
          login_user(user) # login the user
-         return redirect(url_for('user_views.dashboard')) # redirect to main page if login successful
+         return redirect(url_for('jobs_views.coursesAdmin')) # redirect to main page if login successful
     return redirect(url_for('auth_views.index'))
 
 @auth_views.route('/logout', methods=['GET'])

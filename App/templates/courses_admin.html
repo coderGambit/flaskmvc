@@ -443,7 +443,27 @@
         courseCard.appendChild(courseNameSpan);
         courseCard.appendChild(courseTitleSpan);
 
-        for (const skill of courseObject.skills) {
+        let skills = [];
+        if(typeof courseObject.skills === "string"){
+
+            let str = "";
+            for(let i = 0; i < courseObject.skills.length; ++i){
+                let temp = courseObject.skills[i];
+                if((temp >= 'a' && temp <= 'z') || (temp >= 'A' && temp <= 'Z')){
+                    str += temp
+
+                    if(i >= courseObject.skills.length)
+                        skills.push(str);
+                }
+
+                else if(str.length > 0){
+                    skills.push(str);
+                    str = "";
+                }
+            }
+        }
+
+        for (const skill of skills) {
 
             let skillContainer = document.createElement("article");
             let strong = document.createElement("strong");

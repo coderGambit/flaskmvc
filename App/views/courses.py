@@ -67,6 +67,11 @@ def delete_course(courseID):
 
     course = Courses.query.get(courseID) # query course
     if course:
+
+        cjobs = CourseJobs.query.filter_by(courseID)
+        for courseJob in cjobs:
+            db.session.delete(courseJob)
+
         db.session.delete(course)
         db.session.commit()
         return courseID

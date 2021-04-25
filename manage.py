@@ -20,7 +20,7 @@ def initDB():
 @manager.command
 def serve():
     print('Application running in '+app.config['ENV']+' mode')
-    app.run(host='0.0.0.0', port=8081, debug=app.config['ENV']=='development')
+    app.run(host='0.0.0.0', port=8080, debug=app.config['ENV']=='development')
 
 @manager.command
 def make_users():

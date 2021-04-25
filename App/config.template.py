@@ -1,0 +1,11 @@
+DBHOST = "mydb.com"
+DBNAME = "MYDB"
+DBUSER = "USER"
+DBSCHEME = "mysql+pymysql://"
+DBPASSWORD = "PASSWORD"
+DBURI = "postgres://kseltfktgmmicf:6e852880a3c250c4c600886ebcd1080046a6304b333ed12692c065d5570e9c82@ec2-107-22-83-3.compute-1.amazonaws.com:5432/d7hb38bgoce6de"
+SECRET_KEY = "SECRET"
+DBPORT = "3306"
+JWTDELTADAYS = 14
+ENV = 'development'
+SQLITEDB = False

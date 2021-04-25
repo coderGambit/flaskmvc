@@ -1,22 +1,26 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 import datetime
+from .courses import *
 from .user import *
 from .jobs import *
+from .coursejobs import *
 
 class Courses (db.Model):
-    courseID = db.Column(db.Integer, primary_key=True)
+    courseID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id = db.Column('id', db.Integer, db.ForeignKey('user.id'))
-    jobID = db.Column('jobID', db.Integer, db.ForeignKey('jobs.jobID'))
     courseName = db.Column(db.String(80), nullable=True)
     courseDescription = db.Column(db.String(1000), nullable=True)
     skills = db.Column(db.String(100), nullable=True)
+<<<<<<< HEAD
     jobchoices = db.relationship('Jobs')
+=======
+    jobs = db.relationship('CourseJobs')
+>>>>>>> 0ab4894385084b0cbfdfac995634723eb8603ba9
     def toDict(self):
         return{
             'courseID': self.courseID,
             'courseName': self.courseName,
             'courseDescription': self.courseDescription,
-            'skills': self.skills,
-            'jobinfo':self.jobs.toDict()
+            'skills': self.skills
             }

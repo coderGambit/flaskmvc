@@ -1,29 +1,155 @@
-{% extends "layout.html" %}
-{% block title %}Login{% endblock %}
-{% block page %}Login{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
-{{ super() }}
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block content %}
-   <div class="row">
-      
-        <form class="col s12 m8 offset-m2" method="POST" action="/login">
-            {{ form.csrf_token }}
 
-            <div class="input-field col s12 m8 offset-m2"> 
-              {{ form.username(size=20, class="validate") }}
-              {{ form.username.label }}
-            </div>
+    <style>
 
-            <div class="input-field col s12 m8 offset-m2">
-              {{ form.password(size=20, class="validate") }}
-              {{ form.password.label }}
-            </div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            <div class="input-field col s12 m8 offset-m2">
-              {{form.submit}}
-            </div> 
-        </form>
-      
-  </div>
-{% endblock %}
+        header {
+            display: flex;
+            background-color: #333333;
+            padding: 1rem 0;
+        }
+
+        header > a {
+            font-size: 1rem;
+            padding: 0 1rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        header > a:hover {
+            color: white;
+        }
+
+        .home_link {
+            margin-left: auto;
+        }
+
+        .logout_link, .login_link{
+            display: none;
+        }
+
+        body {
+            background-color: #A8C6FA;
+        }
+
+        .main_container {
+            margin: 0 auto;
+            display: flex;
+            height: auto;
+            max-width: 80%;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            gap: 1em;
+            margin: 0 50px 0 0;
+        }
+
+        .fnln_flex_container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        input[type="button"] {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 32px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #000;
+            transition-duration: 0.05s;
+        }
+
+        input[type="button"]:active {
+            background-color: white;
+            color: black;
+        }
+
+        input[type="button"]:hover {
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .about_section {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .about_section_photo {
+            max-width: 100%;
+        }
+
+        .about_section_text_container {
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            content: '';
+            background-color: rgba(168, 198, 250, 0.55);
+        }
+
+        @media only screen and (max-width: 800px) {
+            .about_section {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <a class="home_link" href="/">Home</a>
+    <a class="login_link" href="/login">Login</a>
+
+</header>
+
+<div class="main_container">
+
+    <form action="/login" method="POST">
+        {{ form.csrf_token }}
+
+        <img src="https://picsum.photos/100" alt="logo">
+        <h1>Log In</h1>
+        <label for="username">Username</label><input size="20" type="text" id="username"
+                                                     name="username" placeholder="Username">
+        <label for="password">Password</label><input size="20" type="password" id="password"
+                                                     name="password" placeholder="Password">
+        <input type="submit" id="log_in" name="logIn" value="LOGIN">
+
+    </form>
+
+    <div class="about_section">
+        <div class="about_section_text_container"><p class="about_section_text">About
+            us</p></div>
+        <img class="about_section_photo" src="https://picsum.photos/600" alt="cover photo">
+    </div>
+
+</div>
+
+</body>
+</html>

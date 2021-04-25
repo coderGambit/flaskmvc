@@ -1,0 +1,503 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            display: flex;
+            background-color: #333333;
+            padding: 1rem 0;
+        }
+
+        header > a {
+            font-size: 1rem;
+            padding: 0 1rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        header > a:hover {
+            color: white;
+        }
+
+        .home_link {
+            margin-left: auto;
+        }
+
+        .login_link{
+            display: none;
+        }
+
+        body {
+            background-color: #A8C6FA;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        main {
+            display: flex;
+            align-items: center;
+            max-width: max-content;
+            flex-wrap: wrap;
+            margin: 0 auto;
+            gap: 3rem;
+        }
+
+        .course_dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 290px);
+            max-width: 1450px;
+            margin: 0 auto;
+            gap: 3rem;
+            justify-items: center;
+            justify-content: center;
+            align-items: stretch;
+            align-content: center;
+        }
+
+        .course_card {
+            width: 250px;
+            min-height: 125px;
+            background-color: #3D8AF7;
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 20px;
+            gap: 20px;
+            box-shadow: 0 0 10px #333333;
+        }
+
+        .course_name {
+            text-align: center;
+            grid-column: 1 / -1;
+            font-weight: 700;
+            color: darkgray;
+            text-transform: uppercase;
+            overflow: hidden;
+        }
+
+        .course_title {
+            grid-column: 1 / -1;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .skill_list {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            grid-column: 1 / -1;
+        }
+
+        .skill_container:nth-child(6n + 1) {
+            background-color: #f7aa3d;
+            color: black;
+        }
+
+        .skill_container:nth-child(6n + 2) {
+            background-color: #3de7f7;
+            color: black;
+        }
+
+        .skill_container:nth-child(6n + 3) {
+            background-color: #f73d8a;
+            color: white;
+        }
+
+        .skill_container:nth-child(6n + 4) {
+            background-color: #3df7aa;
+            color: black;
+        }
+
+        .skill_container:nth-child(6n + 5) {
+            background-color: #f74d3d;
+            color: white;
+        }
+
+        .skill_container:nth-child(6n + 6) {
+            background-color: #8af73d;
+            color: black;
+        }
+
+        .skill_container {
+            max-width: max-content;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.6rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .edit_link {
+            align-self: center;
+            justify-self: center;
+            color: var(--headings-color);
+        }
+
+        .delete_link {
+            align-self: center;
+            justify-self: center;
+        }
+
+        .add_course_button_container {
+            display: flex;
+            align-items: center;
+        }
+
+        .circular_button {
+            background-color: darkgray;
+            border-radius: 50%;
+            border: none;
+            box-shadow: 0 0 10px #333333;
+            width: 4rem;
+            height: 4rem;
+            font-size: 4rem;
+            color: white;
+            padding: 0;
+            line-height: 22px;
+        }
+
+        .circular_button:hover {
+            box-shadow: 0 0 10px white;
+            transition-duration: 0.05s;
+        }
+
+        .circular_button:active {
+            transition-duration: 0.05s;
+            background-color: white;
+            color: darkgray;
+        }
+
+        form {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            gap: 1em;
+            margin: 0 auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(168, 98, 250, 0.85);
+            color: white;
+        }
+
+        .jobs-check-list {
+            display: flex;
+            max-width: max-content;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .menu_items {
+            list-style-type: none;
+            max-width: max-content;
+            max-height: 150px;
+            overflow: scroll;
+            padding: 0;
+        }
+
+        .anchor {
+            width: 100%;
+            text-align: center;
+            font-weight: bolder;
+            font-size: 1.2rem;
+            padding: 10px 0;
+            cursor: pointer;
+            border: none;
+        }
+
+        .submit_course_button {
+            border: none;
+            padding: 1em 2em;
+            background-color: darkgray;
+            color: white;
+            transition-duration: 0.05s;
+            box-shadow: 0 0 10px #333;
+        }
+
+        .submit_course_button:active {
+            background-color: white;
+            color: darkgray;
+        }
+
+        .submit_course_button:hover {
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .exit_form_button {
+            transform: rotate(45deg);
+            position: absolute;
+            top: 80px;
+            right: 80px;
+        }
+
+        .exit_form_button:hover {
+            transform: rotate(45deg);
+        }
+
+    </style>
+
+</head>
+<body>
+
+<header>
+
+    <a class="home_link" href="/jobs_admin">Jobs</a>
+    <a class="logout_link" href="/logout">Logout</a>
+
+</header>
+
+<h1>Courses</h1>
+
+<section class="course_dashboard">
+
+    {% for course in courses %}
+
+    <article id="{{course.courseID}}" class="course_card">
+
+        <span class="course_name">{{course.courseName}}</span>
+        <span class="course_title">{{course.courseDescription}}</span>
+
+        <section class="skill_list">
+            {% for skill in course.skills %}
+
+            <article class="skill_container">
+
+                <strong>{{skill}}</strong>
+
+            </article>
+
+            {% endfor %}
+        </section>
+
+        <a href="#" class="edit_link" onclick="editCourse('{{course.courseID}}')">Edit</a>
+        <a href="#" onclick="deleteCourse('{{course.courseID}}')" class="delete_link">Delete</a>
+
+    </article>
+
+    {% endfor %}
+
+    <div class="add_course_button_container">
+        <input id="add_course_button" class="circular_button" type="button" value="+"
+               onclick="addCourse()">
+    </div>
+
+</section>
+
+<form id="add_course_form" action="/insertCourse" method="POST">
+    <h1>Add Course</h1>
+
+    <label for="course_code">Course Name</label>
+    <input type="text" id="course_code" name="coursename" placeholder="Course Name">
+
+    <label for="course_name">Course Description</label>
+    <input type="text" id="course_name" name="coursedescription" placeholder="Course Description">
+
+    <label for="course_skills">Course Skills</label>
+    <input type="text" id="course_skills" name="skills" placeholder="Course Skills">
+
+    <div id="jobs-check-list" class="jobs-check-list">
+
+        <h3 class="anchor">Select Jobs</h3>
+
+        <ul id="menu_items" class="menu_items" name="jobs">
+            {% for job in jobs %}
+            <li><input id="{{job.jobID}}" type="checkbox"/>{{job.jobName}}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <input type="button" class="submit_course_button" id="submit_course_button" name="submitCourse"
+           value="SUBMIT" onclick="submitForm()">
+
+    <input type="button" class="circular_button exit_form_button" id="exit_course_form_button"
+           name="exitCourseForm" value="+" onclick="exitForm()">
+
+</form>
+
+<script>
+
+    function editCourse(id) {
+        // programmatically adding these functions with interpolated version of id causing it to be
+        // passed as an integer instead of string so converting it back here
+        id = id + "";
+        console.log(id);
+    }
+
+    function deleteCourse(id) {
+        // programmatically adding these functions with interpolated version of id causing it to be
+        // passed as an integer instead of string so converting it back here
+        id = id + "";
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if (xhr.status === 200
+                    && xhr.responseText != null
+                    && xhr.responseText.length > 0) {
+
+                    if (xhr.responseText === id) {
+                        document.getElementById(id).remove();
+                    } else
+                        alert(xhr.responseText);
+                } else {
+                    alert("There was an error serving your request");
+                }
+            }
+        }
+        postToRoute("/deleteCourse/" + id, 'GET', xhr)
+    }
+
+    // displays the form to add a new course
+    function addCourse() {
+        let element = document.getElementById("add_course_form");
+        element.style.display = "flex";
+    }
+
+
+    // the following set of functions deals with submitting the form to add a new course
+    function resetCheckboxes() {
+
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        for (const checkbox of checkboxes) {
+            checkbox.checked = false;
+        }
+    }
+
+    function hideModal() {
+        let element = document.getElementById("add_course_form");
+        element.style.display = "none";
+    }
+
+    function getJobIDs() {
+
+        let arr = [];
+
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        for (const checkbox of checkboxes) {
+            if (checkbox.checked == true) {
+                arr.push(checkbox.id);
+            }
+        }
+        return JSON.stringify(arr);
+    }
+
+    function getFormData() {
+        let courseSubmitForm = document.getElementById('add_course_form');
+        let formData = new FormData(courseSubmitForm);
+        formData.append("jobs", getJobIDs());
+        return formData;
+    }
+
+    function insertCourse(courseObject) {
+
+        // since in the jinja template this is converted into a string, do the same here
+        let courseID = courseObject.courseID + "";
+
+        let courseCard = document.createElement("article");
+        let courseNameSpan = document.createElement("span");
+        let courseTitleSpan = document.createElement("span");
+        let skillListSection = document.createElement("section");
+        let editAnchor = document.createElement("a");
+        let deleteAnchor = document.createElement("a");
+
+        courseCard.className = "course_card";
+        courseCard.id = courseID;
+        courseNameSpan.className = "course_name";
+        courseTitleSpan.className = "course_title";
+        skillListSection.className = "skill_list";
+        editAnchor.className = "edit_link";
+        editAnchor.href = "#";
+        editAnchor.setAttribute("onclick", `editCourse(${courseID})`);
+        deleteAnchor.className = "delete_link";
+        deleteAnchor.href = "#";
+        deleteAnchor.setAttribute("onclick", `deleteCourse(${courseID})`);
+
+        courseNameSpan.innerText = courseObject.courseName;
+        courseTitleSpan.innerText = courseObject.courseDescription;
+        editAnchor.innerText = "Edit";
+        deleteAnchor.innerText = "Delete";
+
+        courseCard.appendChild(courseNameSpan);
+        courseCard.appendChild(courseTitleSpan);
+
+        for (const skill of courseObject.skills) {
+
+            let skillContainer = document.createElement("article");
+            let strong = document.createElement("strong");
+
+            skillContainer.className = "skill_container";
+            strong.innerText = skill;
+            skillContainer.appendChild(strong);
+            skillListSection.appendChild(skillContainer);
+        }
+        courseCard.appendChild(skillListSection);
+        courseCard.appendChild(editAnchor);
+        courseCard.appendChild(deleteAnchor);
+
+        let courseDashboardAddButton = document.querySelector(".add_course_button_container");
+        courseDashboardAddButton.insertAdjacentHTML("beforebegin", courseCard.outerHTML);
+    }
+
+    function postToRoute(url, method, xhr, sendingData = null) {
+        xhr.open(method, url);
+        xhr.send(sendingData);
+    }
+
+    function submitForm() {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if (xhr.status === 200
+                    && xhr.responseText !== null
+                    && xhr.responseText.length > 0) {
+                    let courseObject = JSON.parse(xhr.responseText);
+                    insertCourse(courseObject);
+                } else {
+                    alert("There was an error serving your request");
+                }
+            }
+        }
+        postToRoute("/insertCourse", 'POST', xhr, getFormData());
+        resetCheckboxes();
+        hideModal();
+    }
+
+    function exitForm() {
+        hideModal();
+    }
+
+</script>
+
+</body>
+
+</html>

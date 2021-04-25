@@ -1,17 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 import datetime
+from .courses import *
 from .user import *
 from .jobs import *
+from .coursejobs import *
 
 
 class Jobs (db.Model):
-    jobID = db.Column(db.Integer, primary_key=True)
+    jobID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id = db.Column('id', db.Integer, db.ForeignKey('user.id'))
     jobName = db.Column(db.String(80), nullable=False)
     jobDescription = db.Column(db.String(1000), nullable=False)
     requirements = db.Column(db.String(1000), nullable=False)
-    user = db.relationship('User')
     def toDict(self):
         return {
             "jobID": self.jobID,

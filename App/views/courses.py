@@ -1,8 +1,9 @@
 from flask import Blueprint, redirect, render_template, request, jsonify, send_from_directory, flash, url_for, jsonify, json
+from sqlalchemy.exc import IntegrityError
 from flask_login import current_user, login_required
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs, get_jobs_json)
-from App.models import Courses, Jobs, db, User
+from App.models import Courses, Jobs, db, User, CourseJobs
 import ast
 
 #<----------------Render Admin Course and parses jobs and courses------------->
@@ -39,14 +40,20 @@ def insertCourse():
         return "Error" 
     else:
         newcourse = Courses(courseName=coursename, id=current_user.id, courseDescription=coursedescription, skills=skills) # create course object   
+        
         jobids = ast.literal_eval(request.form.get('jobs')) #Get values as an array of JobID's
-        accepted = []
+        courseID = newcourse.toDict()["courseID"]
+        db.session.add(newcourse)
+        
         for jobid in jobids:
             job = Jobs.query.get(jobid)
-            newcourse.jobs = [j.toDict() for j in job]
-        db.session.add(newcourse)
-        db.session.commit()
-    return json.dumps(newcourse, default = encoder_course)
+            courseJob = CourseJobs(courseID=courseID, jobID=jobid, jobs=job)
+            try:
+                db.session.add(courseJob)
+                db.session.commit()
+            except IntegrityError:
+                return "course Job already added"
+        return json.dumps(newcourse, default = encoder_course)
 
 #<-------------------Delete Course----------------------->
 

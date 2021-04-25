@@ -42,9 +42,8 @@ def insertCourse():
         jobids = ast.literal_eval(request.form.get('jobs')) #Get values as an array of JobID's
         accepted = []
         for jobid in jobids:
-            job = Jobs.query.get(jobid) #Query each JobID
-            accepted.append(job) #appends the object to an array of objects
-        newcourse.jobs = accepted
+            job = Jobs.query.get(jobid)
+            newcourse.jobs = [j.toDict() for j in job]
         db.session.add(newcourse)
         db.session.commit()
     return json.dumps(newcourse, default = encoder_course)

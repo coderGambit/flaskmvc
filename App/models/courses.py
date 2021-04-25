@@ -7,16 +7,12 @@ from .jobs import *
 from .coursejobs import *
 
 class Courses (db.Model):
-    courseID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    courseID = db.Column(db.Integer, primary_key=True)
     id = db.Column('id', db.Integer, db.ForeignKey('user.id'))
     courseName = db.Column(db.String(80), nullable=True)
     courseDescription = db.Column(db.String(1000), nullable=True)
     skills = db.Column(db.String(100), nullable=True)
-<<<<<<< HEAD
-    jobchoices = db.relationship('Jobs')
-=======
     jobs = db.relationship('CourseJobs')
->>>>>>> 0ab4894385084b0cbfdfac995634723eb8603ba9
     def toDict(self):
         return{
             'courseID': self.courseID,

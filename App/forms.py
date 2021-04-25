@@ -6,25 +6,4 @@ from wtforms.fields.html5 import EmailField
 class LogIn(FlaskForm):
     username = StringField('username', validators=[InputRequired()])
     password = PasswordField('New Password', validators=[InputRequired()])
-<<<<<<< HEAD
-    submit = SubmitField('Login', render_kw={'class': 'btn waves-effect waves-light white-text'})
-
-class JobForm(FlaskForm):
-    jobname = TextField('Job Name', validators=[InputRequired()])
-    jobdescription =TextField('Job Description', validators=[InputRequired()])
-    requirements = TextField('Requirments', validators=[InputRequired()])
-    submit = SubmitField('Submit Job', render_kw={'class': 'btn waves-effect waves-light white-text'})
-
-class MultiCheckboxField(SelectMultipleField):
-    widget = widgets.ListWidget(prefix_label=False)
-    option_widget = widgets.CheckboxInput()
-
-class CourseForm(FlaskForm):
-    coursename = TextField('Course Name', validators=[InputRequired()])
-    coursedescription = TextField('Course Description', validators=[InputRequired()])
-    skills = TextField('Course Skills', validators=[InputRequired()])
-    jobchoices = MultiCheckboxField('Select Job', coerce=int)
-    submit = SubmitField("Submit Course")
-=======
     logIn = SubmitField('Login')
->>>>>>> 0ab4894385084b0cbfdfac995634723eb8603ba9

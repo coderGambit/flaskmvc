@@ -13,11 +13,13 @@ import ast
 def coursesAdmin():
     jobs = get_jobs()
     courses = get_courses()
+    for course in courses:
+        course.skills = course.skills.split(',')
     return render_template('courses_admin.html', courses=courses, jobs=jobs)
 
 def encoder_course(course):
     if isinstance(course, Courses):
-        return {'courseName':course.courseName, 'courseDescription': course.courseDescription, 'skills':course.skills
+        return {'courseID':course.courseID,'courseName':course.courseName, 'courseDescription': course.courseDescription, 'skills':course.skills
         }
     raise TypeError(f'Object{course} is not of type Jobs')
 
@@ -25,19 +27,6 @@ def encoder_course(course):
 
 @courses_views.route('/insertCourse', methods=['POST'])
 @login_required
-<<<<<<< HEAD
-def courseAction():
-     form = CourseForm() # create form object
-     if request.method == 'POST' and form.validate_on_submit():
-        data = request.form # get data from form submission
-        newcourse = Courses(courseName=data['coursename'],id=current_user.id, courseDescription=data['coursedescription'], skills=data['skills']) # create course object 
-        accepted = []
-        c_records = Jobs.query.all()
-        for choice in c_records:
-            if choice.jobID in form.jobchoices.data:
-                accepted.append(choice)
-        newcourse.jobs = accepted
-=======
 def insertCourse():
     coursename = request.form.get('coursename')  
     coursedescription = request.form.get('coursedescription') 
@@ -46,17 +35,16 @@ def insertCourse():
     #<----Data validation----->
 
     if (len(coursename) == 0 or len(coursename)>100 or not coursename.strip()):
-        return "Error"
+        return ""
     if (len(coursedescription) == 0 or len(coursedescription) > 1000 or coursedescription.isdigit() or not coursedescription.strip()):
-        return "Error"
+        return ""
     if (len(skills) == 0 or len(skills) >100 or skills.isdigit() or not skills.strip()):
-        return "Error" 
+        return "" 
     else:
         newcourse = Courses(courseName=coursename, id=current_user.id, courseDescription=coursedescription, skills=skills) # create course object   
         
         jobids = ast.literal_eval(request.form.get('jobs')) #Get values as an array of JobID's
         courseID = newcourse.toDict()["courseID"]
->>>>>>> 0ab4894385084b0cbfdfac995634723eb8603ba9
         db.session.add(newcourse)
         
         for jobid in jobids:
@@ -74,33 +62,10 @@ def insertCourse():
 @courses_views.route('/deleteCourse/<courseID>', methods=['GET'])
 @login_required
 def delete_course(courseID):
-    course = Courses.query.filter_by(id=current_user.id, courseID=courseID).first() # query course
-    if course:
-        db.session.delete(course)
-        db.session.commit()
-        return course.courseID
-    return 'Unauthorized or course not found'
-
-# ----------------Edit Course Route-------------------------------->
-
-@courses_views.route('/editCourse/<courseID>', methods=['PUT'])
-@login_required
-def edit_course(courseID):
-    course = Course.query.filter_by(id=current_user.id, courseID=courseID).first()
-    if course == None:
-        return 'Invalid id or unauthorized'
-    data = request.forms
-    if 'courseName' in data:
-        course.courseName = data['courseName']
-    if 'courseDescription' in data:
-        course.courseDescription = data['courseDescription']
-    if 'skills' in data:
-        course.skills = data['skills']
-    if 'jobs' in data['jobs']:
-        for jobid in data['jobs']:
-            job = Jobs.query.get(jobid) #Query each JobID
-            accepted.append(job)
-    course.jobs = accepted 
-    db.session.add(course)
+    course = Courses.query.get(courseID)  # query course
+    course = CourseJobs.query.get(courseID) 
+    if course is None:
+        return 'Unauthorized or job not found'
+    db.session.delete(course)
     db.session.commit()
-    return 'Updated', 201
+    return course.toDict

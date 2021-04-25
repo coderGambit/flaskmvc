@@ -3,7 +3,6 @@ from flask_login import current_user, login_required
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs, get_jobs_json)
 from App.models import Courses, Jobs, db, User
-from App.forms import CourseForm
 import ast
 
 #<----------------Render Admin Course and parses jobs and courses------------->

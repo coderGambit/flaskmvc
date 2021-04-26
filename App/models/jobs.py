@@ -20,4 +20,4 @@ class Jobs (db.Model):
             "jobName": self.jobName,
             "jobDescription": self.jobDescription,
             "requirements": self.requirements
-            }
+        }

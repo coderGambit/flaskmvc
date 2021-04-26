@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from flask_login import current_user, login_required
 courses_views = Blueprint('courses_views', __name__, template_folder='../templates')
 from App.controllers import(get_courses_json, get_courses, get_jobs, get_jobs_json)
-from App.models import Courses, Jobs, db, User, CourseJobs
+from App.models import Courses, Jobs, db, User
 import ast
 import uuid
 
@@ -12,11 +12,10 @@ import uuid
 @courses_views.route('/courses_admin', methods=['GET'])
 @login_required
 def coursesAdmin():
-    jobs = get_jobs()
     courses = get_courses()
     for course in courses:
         course.skills = course.skills.split(',')
-    return render_template('courses_admin.html', courses=courses, jobs=jobs)
+    return render_template('courses_admin.html', courses=courses)
 
 def encoder_course(course):
     if isinstance(course, Courses):
@@ -49,16 +48,14 @@ def insertCourse():
         
         for jobid in jobids:
             job = Jobs.query.get(jobid)
-            courseJob = CourseJobs(courseID=courseID, jobID=jobid)
+            newcourse.jobsForCourse.append(job)
 
-            try:
-                db.session.add(courseJob)
-                db.session.commit()
-            except IntegrityError:
-                return "course Job already added"
+        try:
+            db.session.add(newcourse)
+            db.session.commit()
+        except IntegrityError:
+            return "Course already added"
 
-        courseID = newcourse.toDict()["courseID"]
-        db.session.add(newcourse)
         return json.dumps(newcourse, default = encoder_course)
 
 #<-------------------Delete Course----------------------->
@@ -69,12 +66,8 @@ def delete_course(courseID):
 
     course = Courses.query.get(courseID) # query course
     if course:
-
-        cjobs = CourseJobs.query.filter_by(courseID)
-        for courseJob in cjobs:
-            db.session.delete(courseJob)
-
         db.session.delete(course)
         db.session.commit()
         return courseID
+
     return 'Unauthorized or course not found'

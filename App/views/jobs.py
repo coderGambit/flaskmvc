@@ -26,7 +26,7 @@ def encoder_jobs(job):
 
 @jobs_views.route('/insertJob', methods=['POST'])
 @login_required
-def insertCourse():
+def insertJob():
     jobname = request.form.get('jobname') 
     jobdescription = request.form.get('jobdescription') 
     requirements = request.form.get('requirements')

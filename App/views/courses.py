@@ -45,18 +45,20 @@ def insertCourse():
         newcourse = Courses(courseName=coursename, courseID=uuid.uuid4().int & 0xfffff, courseDescription=coursedescription, skills=skills) # create course object
         
         jobids = ast.literal_eval(request.form.get('jobs')) #Get values as an array of JobID's
-        courseID = newcourse.toDict()["courseID"]
-        db.session.add(newcourse)
 
         
         for jobid in jobids:
             job = Jobs.query.get(jobid)
-            courseJob = CourseJobs(courseID=courseID, jobID=jobid, jobs=job)
+            courseJob = CourseJobs(courseID=courseID, jobID=jobid)
+
             try:
                 db.session.add(courseJob)
                 db.session.commit()
             except IntegrityError:
                 return "course Job already added"
+
+        courseID = newcourse.toDict()["courseID"]
+        db.session.add(newcourse)
         return json.dumps(newcourse, default = encoder_course)
 
 #<-------------------Delete Course----------------------->
